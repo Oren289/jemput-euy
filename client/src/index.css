@@ -14,6 +14,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.admin-dashboard {
+  display: flex;
+  position: relative;
+}
+
 .small-text {
   font-size: 0.8em;
 }
@@ -135,4 +159,8 @@ code {
 .card-header {
   background-color: #205295;
   color: whitesmoke;
+}
+
+.red-outline {
+  border-color: rgb(222, 66, 66);
 }

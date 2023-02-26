@@ -64,7 +64,7 @@ const LayananForm = () => {
   const [kecamatan, setKecamatan] = useState("");
   const [kelurahan, setKelurahan] = useState("");
   const [keteranganAlamat, setKeteranganAlamat] = useState("");
-  const [jumlahSampah, setJumlahSampah] = useState(false);
+  const [jumlahSampah, setJumlahSampah] = useState(1);
   const [jenisSampah, setJenisSampah] = useState("");
   const [keteranganTambahan, setKeteranganTambahan] = useState("");
 
@@ -103,7 +103,12 @@ const LayananForm = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const body = { nama, noHp, kecamatan, kelurahan, keteranganAlamat, jumlahSampah, jenisSampah, keteranganTambahan };
+      if (nama === "" || noHp === "" || kecamatan === "" || kelurahan === "" || keteranganAlamat === "" || jenisSampah === "") {
+        return toast.error("Mohon lengkapi formulir terlebih dahulu!");
+      }
+
+      const valueKecamatan = kecamatan.value;
+      const body = { nama, noHp, valueKecamatan, kelurahan, keteranganAlamat, jumlahSampah, jenisSampah, keteranganTambahan };
 
       const response = await fetch("http://localhost:5000/layanan/", {
         method: "POST",
@@ -118,6 +123,9 @@ const LayananForm = () => {
 
       if (parseRes.status) {
         toast.success("Permohonan berhasil dikirim!");
+        setJumlahSampah(1);
+        setJenisSampah("");
+        setKeteranganTambahan("");
       } else {
         toast.error(parseRes.error);
       }

@@ -55,18 +55,20 @@ function App() {
 
   return (
     <UserContextProvider>
-      <Router>
-        <Routes>
-          <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to='/' />}></Route>
-          <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to='/' />}></Route>
-          <Route exact path='/myprofile' element={<UserProfile isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-          <Route exact path='/layanan' element={<Layanan isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-          <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
-          {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
-          <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-        </Routes>
-      </Router>
-      <ToastContainer autoClose={2000} />
+      <div className='app'>
+        <Router>
+          <Routes>
+            <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to='/' />}></Route>
+            <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to='/' />}></Route>
+            <Route exact path='/myprofile' element={<UserProfile isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+            <Route exact path='/layanan' element={<Layanan isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+            <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
+            {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
+            <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+          </Routes>
+        </Router>
+        <ToastContainer autoClose={2000} />
+      </div>
     </UserContextProvider>
   );
 }

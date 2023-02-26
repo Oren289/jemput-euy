@@ -14,6 +14,13 @@ const EditProfileForm = ({ userData }) => {
   const [kelurahan, setKelurahan] = useState("");
   const [keteranganAlamat, setKeteranganAlamat] = useState("");
 
+  const [newPass, setNewPass] = useState("");
+  const [retypePass, setRetypePass] = useState("");
+  const [passErrorMsg, setPassErrorMsg] = useState("");
+
+  const [redOutline, setRedOutline] = useState("");
+  const [disabledBtn, setDisabledBtn] = useState("disabled");
+
   const getUserData = async () => {
     try {
       const response = await fetch("http://localhost:5000/user/", {
@@ -163,11 +170,64 @@ const EditProfileForm = ({ userData }) => {
     }
   };
 
+  const onRetypePassChange = (e) => {
+    const newRetypePass = e.target.value;
+    setRetypePass(e.target.value);
+
+    if (newRetypePass !== newPass) {
+      setPassErrorMsg("Password tidak cocok!");
+      setRedOutline("red-outline");
+      setDisabledBtn("disabled");
+    } else if (newRetypePass === newPass) {
+      setPassErrorMsg("");
+      setRedOutline("");
+      setDisabledBtn("");
+    }
+  };
+
+  const onNewPassSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (newPass === "") {
+        return toast.error("Password tidak boleh kosong!");
+      }
+
+      if (newPass !== retypePass) {
+        return toast.error("Password tidak cocok!");
+      }
+
+      const body = { newPass };
+
+      const response = await fetch("http://localhost:5000/user/changepassword", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.token,
+        },
+        body: JSON.stringify(body),
+      });
+
+      const parseRes = await response.json();
+      console.log(parseRes);
+
+      if (parseRes.status) {
+        toast.success("Password berhasil diperbarui");
+        setNewPass("");
+        setRetypePass("");
+        setRedOutline("disabled");
+      } else {
+        toast.error("Password baru tidak boleh sama dengan yang lama!");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   useEffect(() => {
     getUserData();
     getAddressData();
     functions();
-  }, getUserData);
+  }, []);
 
   return (
     <div>
@@ -351,7 +411,7 @@ const EditProfileForm = ({ userData }) => {
         </div>
         <div className='card-body d-none text-start' id='change-password-card'>
           <h3 className='fw-bold'>Ganti Password</h3>
-          <form action='/myaccount/change-password?_method=PUT' method='POST'>
+          <form onSubmit={onNewPassSubmit} method='POST'>
             <div className='row mt-4'>
               <div className='col-md-3'>
                 <label htmlFor='myaccount-new-password' className='col-form-label'>
@@ -359,7 +419,7 @@ const EditProfileForm = ({ userData }) => {
                 </label>
               </div>
               <div className='col'>
-                <input type='password' id='myaccount-new-password' className='form-control' name='password' autoComplete='new-password' />
+                <input type='password' id='myaccount-new-password' className='form-control no-outline' name='newPass' autoComplete='new-password' value={newPass} onChange={(e) => setNewPass(e.target.value)} />
                 <div id='passwordHelp' className='form-text text-danger'></div>
               </div>
             </div>
@@ -370,12 +430,14 @@ const EditProfileForm = ({ userData }) => {
                 </label>
               </div>
               <div className='col'>
-                <input type='password' id='myaccount-confirm-password' className='form-control' name='confirm-password' autoComplete='new-password' />
-                <div id='confirmPasswordHelp' className='form-text text-danger'></div>
+                <input type='password' id='myaccount-confirm-password' className={`form-control no-outline ${redOutline}`} name='confirm-password' autoComplete='new-password' value={retypePass} onChange={(e) => onRetypePassChange(e)} />
+                <div id='confirmPasswordHelp' className='form-text text-danger'>
+                  {passErrorMsg}
+                </div>
               </div>
             </div>
             <div className='d-flex justify-content-end mt-4'>
-              <button className='btn btn-info' type='submit'>
+              <button className={`btn btn-info ${disabledBtn}`} type='submit'>
                 Simpan Perubahan
               </button>
             </div>
