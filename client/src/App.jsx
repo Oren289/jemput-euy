@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ColorModeContext, useMode } from "./theme";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
 // components
 import Dashboard from "./routes/Dashboard";
@@ -14,8 +16,11 @@ import Layanan from "./routes/Layanan";
 // import { UserContextProvider } from "./context/UserContext";
 import Lapor from "./routes/Lapor";
 import { UserContextProvider } from "./context/UserContext";
+import AdminDashboard from "./routes/AdminDashboard";
 
 function App() {
+  const [theme, colorMode] = useMode();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const setAuth = (boolean) => {
@@ -54,22 +59,29 @@ function App() {
   };
 
   return (
-    <UserContextProvider>
-      <div className='app'>
-        <Router>
-          <Routes>
-            <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to='/' />}></Route>
-            <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to='/' />}></Route>
-            <Route exact path='/myprofile' element={<UserProfile isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-            <Route exact path='/layanan' element={<Layanan isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-            <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
-            {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
-            <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-          </Routes>
-        </Router>
-        <ToastContainer autoClose={2000} />
-      </div>
-    </UserContextProvider>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
+          <UserContextProvider>
+            <div className='app'>
+              <Router>
+                <Routes>
+                  <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to='/' />}></Route>
+                  <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to='/' />}></Route>
+                  <Route exact path='/myprofile' element={<UserProfile isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+                  <Route exact path='/layanan' element={<Layanan isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+                  <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
+                  {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
+                  <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+                  <Route exact path='/admin-dashboard' element={<AdminDashboard />}></Route>
+                </Routes>
+              </Router>
+              <ToastContainer autoClose={2000} />
+            </div>
+          </UserContextProvider>
+        </CssBaseline>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
