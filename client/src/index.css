@@ -1,13 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;800&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: "Poppins", sans-serif;
+  background-color: rgb(244, 244, 244);
+  color: rgb(72, 72, 72);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.small-text {
+  font-size: 0.8em;
+}
+
+.card {
+  background-color: rgb(240, 240, 240);
+}
+
+.form-control {
+  border-color: rgb(203, 203, 203);
+  padding: 0.6rem;
+}
+
+.no-outline:focus {
+  box-shadow: none;
+  border-color: #362fd9;
+}
+
+.backgroundLogin {
+  background-color: #205295;
+  /* max-width: 100vw; */
+  min-height: 100vh;
+}
+
+.backgroundRegister {
+  background-color: #205295;
+}
+
+.login-card {
+  min-height: 100vh;
+}
+
+.login-card-container {
+  width: 30%;
+}
+
+/* Navbar */
+.navbar {
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.navbar-brand {
+  color: #205295;
+}
+
+.navbar-brand:hover {
+  color: #205295;
+}
+
+.nav-link {
+  color: #1290e3;
+}
+
+.active {
+  color: #362fd9 !important;
+  text-decoration: underline;
+}
+
+.nav-link:hover {
+  color: #362fd9;
+}
+/* End of Navbar */
+
+/* Buttons */
+.btn-info {
+  background-color: #205295;
+  color: whitesmoke;
+  padding: 0.5em 1em;
+  border-radius: 0.4em;
+  border-color: #362fd9;
+}
+
+.btn-info:hover {
+  background-color: #1290e3;
+  border-color: #1290e3;
+  color: whitesmoke;
+}
+
+.btn-masuk {
+  text-decoration: none;
+  color: #205295;
+  padding: 0.5em 1em;
+}
+
+.btn-masuk:hover {
+  color: #1290e3;
+  border: 1px solid #1290e3;
+}
+
+.dd-btn:focus {
+  border-color: #1290e3;
+}
+/* End of Buttons */
+
+/* Jumbotron */
+.jumbotron {
+  /* background-color: #1290e3; */
+  background-color: #205295;
+  min-height: 70vh;
+}
+
+.text-dark-blue {
+  color: #93c6e7;
+}
+
+.jumbo-img img {
+  max-width: 100%;
+}
+/* End of Jumbotron */
+
+.user-picture {
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 180px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-header {
+  background-color: #205295;
+  color: whitesmoke;
 }
