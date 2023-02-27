@@ -25,7 +25,7 @@ const Navbar = ({ username, logout }) => {
 
   return (
     <div>
-      <nav className='navbar navbar-expand-lg bg-body-tertiary py-3 shadow-sm'>
+      <nav className='navbar navbar-expand-lg bg-body-tertiary py-3 shadow'>
         <div className='container px-md-5'>
           <a className='navbar-brand fw-bold fs-2 me-md-5' href='#'>
             Jemput Euy!
