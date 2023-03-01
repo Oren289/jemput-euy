@@ -17,6 +17,8 @@ import Layanan from "./routes/Layanan";
 import Lapor from "./routes/Lapor";
 import { UserContextProvider } from "./context/UserContext";
 import AdminDashboard from "./routes/AdminDashboard";
+import { LayananContextProvider } from "./context/LayananContext";
+import DaftarLayananPage from "./routes/DaftarLayananPage";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -62,23 +64,26 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline>
-          <UserContextProvider>
-            <div className='app'>
-              <Router>
-                <Routes>
-                  <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to='/' />}></Route>
-                  <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to='/' />}></Route>
-                  <Route exact path='/myprofile' element={<UserProfile isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-                  <Route exact path='/layanan' element={<Layanan isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-                  <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
-                  {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
-                  <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-                  <Route exact path='/admin-dashboard' element={<AdminDashboard />}></Route>
-                </Routes>
-              </Router>
-              <ToastContainer autoClose={2000} />
-            </div>
-          </UserContextProvider>
+          <LayananContextProvider>
+            <UserContextProvider>
+              <div className='app'>
+                <Router>
+                  <Routes>
+                    <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to='/' />}></Route>
+                    <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to='/' />}></Route>
+                    <Route exact path='/myprofile' element={<UserProfile isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+                    <Route exact path='/layanan' element={<Layanan isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+                    <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
+                    {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
+                    <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
+                    <Route exact path='/admin-dashboard' element={<AdminDashboard />}></Route>
+                    <Route exact path='/daftar-layanan' element={<DaftarLayananPage />}></Route>
+                  </Routes>
+                </Router>
+                <ToastContainer autoClose={2000} />
+              </div>
+            </UserContextProvider>
+          </LayananContextProvider>
         </CssBaseline>
       </ThemeProvider>
     </ColorModeContext.Provider>

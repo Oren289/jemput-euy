@@ -8,7 +8,7 @@ const Navbar = ({ username, logout }) => {
 
     const token = localStorage.getItem("token");
 
-    if (token) {
+    if (username) {
       buttonGroup.classList.remove("d-none");
       dropdown.classList.remove("d-none");
       buttonGroup.classList.add("d-none");
@@ -25,9 +25,9 @@ const Navbar = ({ username, logout }) => {
 
   return (
     <div>
-      <nav className='navbar navbar-expand-lg bg-body-tertiary py-3 shadow'>
+      <nav className='navbar navbar-expand-lg bg-body-tertiary py-2 shadow'>
         <div className='container px-md-5'>
-          <a className='navbar-brand fw-bold fs-2 me-md-5' href='#'>
+          <a className='navbar-brand fw-bold fs-4 me-md-5' href='#'>
             Jemput Euy!
           </a>
           <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>

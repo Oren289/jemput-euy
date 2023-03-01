@@ -26,4 +26,17 @@ router.post("/", authorization, async (req, res) => {
   }
 });
 
+router.get("/", authorization, async (req, res) => {
+  try {
+    const semuaLayanan = await pool.query("SELECT * FROM permintaan_layanan ORDER BY urutan ASC");
+
+    res.status(200).json({
+      status: "ok",
+      data: semuaLayanan.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 module.exports = router;

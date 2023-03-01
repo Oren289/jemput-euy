@@ -5,11 +5,11 @@ import Header from "../components/Header";
 
 const AdminDashboard = () => {
   return (
-    <div className='admin-dashboard'>
+    <div className='admin-container'>
       <SideBar></SideBar>
       <div className='content'>
         <TopBar></TopBar>
-        <div className='container mt-md-5'>
+        <div className='container mt-md-5 ms-md-5'>
           <Header title='DASHBOARD' subtitle='Selamat datang di dashboard' />
         </div>
       </div>
