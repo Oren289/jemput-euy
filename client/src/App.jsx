@@ -15,10 +15,9 @@ import UserProfile from "./routes/UserProfile";
 import Layanan from "./routes/Layanan";
 // import { UserContextProvider } from "./context/UserContext";
 import Lapor from "./routes/Lapor";
-import { UserContextProvider } from "./context/UserContext";
 import AdminDashboard from "./routes/AdminDashboard";
+import { UserContextProvider } from "./context/UserContext";
 import { LayananContextProvider } from "./context/LayananContext";
-import DaftarLayananPage from "./routes/DaftarLayananPage";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -77,7 +76,7 @@ function App() {
                     {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
                     <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
                     <Route exact path='/admin-dashboard' element={<AdminDashboard />}></Route>
-                    <Route exact path='/daftar-layanan' element={<DaftarLayananPage />}></Route>
+                    {/* <Route exact path='/daftar-layanan' element={<DaftarLayananPage />}></Route> */}
                   </Routes>
                 </Router>
                 <ToastContainer autoClose={2000} />

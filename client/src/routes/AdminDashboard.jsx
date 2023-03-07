@@ -1,17 +1,17 @@
-import React from "react";
-import TopBar from "../components/TopBar";
-import SideBar from "../components/SideBar";
-import Header from "../components/Header";
+import React, { useState } from "react";
+import AdminNavbar from "../components/AdminNavbar";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 const AdminDashboard = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className='admin-container'>
-      <SideBar></SideBar>
-      <div className='content'>
-        <TopBar></TopBar>
-        <div className='container mt-md-5 ms-md-5'>
-          <Header title='DASHBOARD' subtitle='Selamat datang di dashboard' />
-        </div>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className={isOpen ? "admin-body" : "admin-body-closed"}>
+        <AdminNavbar />
+        <h3>Admin Dashboard</h3>
       </div>
     </div>
   );

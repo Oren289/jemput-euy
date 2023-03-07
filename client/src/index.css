@@ -6,12 +6,14 @@ body,
 .admin-container,
 .app,
 .content {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -45,7 +47,20 @@ code {
 
 .admin-container {
   display: flex;
+  height: 150vh;
   position: relative;
+}
+
+.admin-body {
+  margin-left: 18rem;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.admin-body-closed {
+  width: 100%;
+  margin-left: 7rem;
+  margin-top: 0.5rem;
 }
 
 .small-text {
@@ -102,7 +117,7 @@ code {
   color: #1290e3;
 }
 
-.active {
+.nav-active {
   color: #362fd9 !important;
   text-decoration: underline;
 }
@@ -175,3 +190,61 @@ code {
 .red-outline {
   border-color: rgb(222, 66, 66);
 }
+
+/* SIDEBAR */
+
+.sidebar {
+  min-height: 100vh;
+  width: 16%;
+  background-color: #205295;
+  position: fixed;
+  padding: 1rem;
+}
+
+.sidebar-list {
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+
+.sidebar-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
+  margin-bottom: 1rem;
+  color: whitesmoke;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.sidebar-brand {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.sidebar-header {
+  align-items: center;
+}
+
+.icon,
+.link_text {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.link {
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  background-color: #1290e3;
+}
+
+.active {
+  background-color: #1290e3;
+}
+
+/* END OF SIDEBAR */
