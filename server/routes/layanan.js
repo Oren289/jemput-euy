@@ -6,11 +6,11 @@ const authorization = require("../middleware/authorization");
 
 router.post("/", authorization, async (req, res) => {
   try {
-    const { nama, noHp, kecamatan, kelurahan, keteranganAlamat, jumlahSampah, jenisSampah, keteranganTambahan } = req.body;
+    const { nama, noHp, valueKecamatan, kelurahan, keteranganAlamat, jumlahSampah, jenisSampah, keteranganTambahan } = req.body;
 
     const newPermintaanLayanan = await pool.query(
       "INSERT INTO permintaan_layanan (username_pengguna, nama_pemohon, no_hp_pemohon, alamat_kecamatan, alamat_kelurahan, alamat_ket_tambahan, jumlah_sampah, keterangan_tambahan) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id_permintaan",
-      [req.user, nama, noHp, kecamatan, kelurahan, keteranganAlamat, jumlahSampah, keteranganTambahan]
+      [req.user, nama, noHp, valueKecamatan, kelurahan, keteranganAlamat, jumlahSampah, keteranganTambahan]
     );
 
     const id_permintaan = newPermintaanLayanan.rows[0].id_permintaan;
@@ -23,6 +23,19 @@ router.post("/", authorization, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.get("/", authorization, async (req, res) => {
+  try {
+    const semuaLayanan = await pool.query("SELECT * FROM permintaan_layanan ORDER BY urutan ASC");
+
+    res.status(200).json({
+      status: "ok",
+      data: semuaLayanan.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
   }
 });
 

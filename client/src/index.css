@@ -1,13 +1,254 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;800&display=swap");
+
+html,
+body,
+#root,
+.admin-container,
+.app,
+.content {
+  min-height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: "Poppins", sans-serif;
+  background-color: rgb(244, 244, 244);
+  color: rgb(72, 72, 72);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.admin-container {
+  display: flex;
+  height: 150vh;
+  position: relative;
+}
+
+.admin-body {
+  margin-left: 15.5rem;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.admin-body-closed {
+  width: 100%;
+  margin-left: 4.5rem;
+  margin-top: 0.5rem;
+}
+
+.admin-content {
+  margin: 2rem 5rem;
+}
+
+.small-text {
+  font-size: 0.8em;
+}
+
+.card {
+  background-color: rgb(240, 240, 240);
+}
+
+.form-control {
+  border-color: rgb(203, 203, 203);
+  padding: 0.6rem;
+  font-size: 1em;
+}
+
+.no-outline:focus {
+  box-shadow: none;
+  border-color: #362fd9;
+}
+
+.backgroundLogin {
+  background-color: #205295;
+  /* max-width: 100vw; */
+  min-height: 100vh;
+}
+
+.backgroundRegister {
+  background-color: #205295;
+}
+
+.login-card {
+  min-height: 100vh;
+}
+
+.login-card-container {
+  width: 30%;
+}
+
+/* Navbar */
+.navbar {
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.navbar-brand {
+  color: #205295;
+}
+
+.navbar-brand:hover {
+  color: #205295;
+}
+
+.nav-link {
+  color: #1290e3;
+}
+
+.nav-active {
+  color: #362fd9 !important;
+  text-decoration: underline;
+}
+
+.nav-link:hover {
+  color: #362fd9;
+}
+/* End of Navbar */
+
+/* Buttons */
+.btn-info {
+  background-color: #205295;
+  color: whitesmoke;
+  padding: 0.5em 1em;
+  border-radius: 0.4em;
+  border-color: #362fd9;
+}
+
+.btn-info:hover {
+  background-color: #1290e3;
+  border-color: #1290e3;
+  color: whitesmoke;
+}
+
+.btn-masuk {
+  text-decoration: none;
+  color: #205295;
+  padding: 0.5em 1em;
+}
+
+.btn-masuk:hover {
+  color: #1290e3;
+  border: 1px solid #1290e3;
+}
+
+.dd-btn:focus {
+  border-color: #1290e3;
+}
+/* End of Buttons */
+
+/* Jumbotron */
+.jumbotron {
+  /* background-color: #1290e3; */
+  background-color: #205295;
+  min-height: 70vh;
+}
+
+.text-dark-blue {
+  color: #93c6e7;
+}
+
+.jumbo-img img {
+  max-width: 100%;
+}
+/* End of Jumbotron */
+
+.user-picture {
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 180px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-header {
+  background-color: #205295;
+  color: whitesmoke;
+}
+
+.red-outline {
+  border-color: rgb(222, 66, 66);
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  min-height: 100vh;
+  width: 15rem;
+  background-color: #205295;
+  position: fixed;
+  padding: 1rem;
+}
+
+.sidebar-list {
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+
+.sidebar-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
+  margin-bottom: 1rem;
+  color: whitesmoke;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.sidebar-brand {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.sidebar-header {
+  align-items: center;
+}
+
+.icon,
+.link_text {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.link {
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  background-color: #1290e3;
+}
+
+.active {
+  background-color: #1290e3;
+}
+
+/* END OF SIDEBAR */

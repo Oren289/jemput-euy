@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
 const { body, validationResult } = require("express-validator");
+const bcrypt = require("bcrypt");
 
 router.get("/", authorization, async (req, res) => {
   try {
@@ -62,5 +63,32 @@ router.put("/address", authorization, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.put("/changepassword", authorization, [body("newPassword").isLength({ min: 8 }).withMessage("Password harus minimal 8 karakter")], async (req, res) => {
+  try {
+    const { newPass } = req.body;
+
+    console.log(newPass);
+
+    const pengguna = await pool.query("SELECT password FROM pengguna WHERE username_pengguna = $1", [req.user]);
+
+    const cekDuplikat = await bcrypt.compare(newPass, pengguna.rows[0].password);
+    if (cekDuplikat) {
+      console.log(cekDuplikat);
+      return res.status(401).json({ error: "duplicate password" });
+    }
+
+    // bycrypting password
+    const saltRound = 10;
+    const salt = await bcrypt.genSalt(saltRound);
+    const bcryptPassword = await bcrypt.hash(newPass, salt);
+
+    const insertNewPassword = await pool.query("UPDATE pengguna SET password = $1 WHERE username_pengguna = $2", [bcryptPassword, req.user]);
+
+    res.status(200).json({ status: "ok", msg: "updated successfully" });
+  } catch (error) {
+    console.error(error.message);
   }
 });
