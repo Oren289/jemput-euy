@@ -21,7 +21,7 @@ const Navbar = ({ username, logout }) => {
 
   useEffect(() => {
     dropdownToggle();
-  });
+  }, [username]);
 
   return (
     <div>

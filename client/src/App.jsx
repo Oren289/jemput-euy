@@ -15,12 +15,14 @@ import UserProfile from "./routes/UserProfile";
 import Layanan from "./routes/Layanan";
 // import { UserContextProvider } from "./context/UserContext";
 import Lapor from "./routes/Lapor";
-import AdminDashboard from "./routes/AdminDashboard";
+import AdminDashboard from "./routes/admin/AdminDashboard";
 import { UserContextProvider } from "./context/UserContext";
 import { LayananContextProvider } from "./context/LayananContext";
+import DaftarLayanan from "./routes/admin/DaftarLayanan";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [isOpen, setIsOpen] = useState(false);
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -47,7 +49,7 @@ function App() {
 
   useEffect(() => {
     isAuth();
-  });
+  }, []);
 
   const logout = (e) => {
     e.preventDefault();
@@ -75,7 +77,8 @@ function App() {
                     <Route exact path='/' element={<Dashboard setAuth={setAuth} />}></Route>
                     {/* <Route exact path='/' element={!isAuthenticated ? <HomePage /> : <Navigate to='/dashboard' />}></Route> */}
                     <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
-                    <Route exact path='/admin-dashboard' element={<AdminDashboard />}></Route>
+                    <Route exact path='/admin-dashboard' element={<AdminDashboard isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
+                    <Route exact path='/admin-daftar-layanan' element={<DaftarLayanan isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
                     {/* <Route exact path='/daftar-layanan' element={<DaftarLayananPage />}></Route> */}
                   </Routes>
                 </Router>
