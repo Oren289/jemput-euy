@@ -5,7 +5,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button } from "@mui/material";
 import { IconButton } from "@mui/material";
 
 const DaftarLayanan = ({ isOpen, setIsOpen }) => {
@@ -40,12 +39,13 @@ const DaftarLayanan = ({ isOpen, setIsOpen }) => {
     {
       field: "nama_pemohon",
       headerName: "Nama Pemohon",
-      width: 150,
+      width: 200,
     },
     {
       field: "no_hp_pemohon",
       headerName: "No. Hp",
       width: 120,
+      sortable: false,
     },
     {
       field: "alamat_kecamatan",
@@ -68,7 +68,7 @@ const DaftarLayanan = ({ isOpen, setIsOpen }) => {
       headerName: "Aksi",
       sortable: false,
       filterable: false,
-      width: 120,
+      width: 132,
       renderCell: (params) => {
         return (
           <div>
@@ -103,8 +103,15 @@ const DaftarLayanan = ({ isOpen, setIsOpen }) => {
               rowsPerPageOptions={[10]}
               getRowId={(row) => row.id_permintaan}
               sx={{
-                "row:nth-of-type(odd)": {
-                  backgroundColor: "grey",
+                "& .MuiDataGrid-row": {
+                  "&:nth-of-type(even)": { backgroundColor: "rgba(235, 235, 235, .7)" },
+                },
+                "& .MuiDataGrid-columnHeadersInner": {
+                  backgroundColor: "#205295",
+                  color: "whitesmoke",
+                  "& .MuiSvgIcon-root": {
+                    color: "whitesmoke",
+                  },
                 },
               }}
             />
