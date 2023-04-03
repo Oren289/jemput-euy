@@ -71,3 +71,5 @@ VALUES ('ilhan', 'ilhan123' , 'Ilhan', 'Mahardika', 'ilhanmahardikap@gmail.com',
 
 INSERT INTO admin (username_admin, password, nama_depan_admin, nama_belakang_admin, email_admin)
 VALUES ('admin', 'admin123', 'Johhny', 'Depp', 'adminganteng@gmail.com');
+
+ALTER TABLE permintaan_layanan ALTER status_layanan SET DEFAULT 'Menunggu proses review';

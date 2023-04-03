@@ -4,6 +4,7 @@ const pool = require("../db");
 const authorization = require("../middleware/authorization");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const bcryptPassword = require("../utils/bcryptPassword");
 
 router.get("/", authorization, async (req, res) => {
   try {
@@ -18,20 +19,21 @@ router.get("/", authorization, async (req, res) => {
 
 module.exports = router;
 
-router.put("/", authorization, [body("email").isEmail().withMessage("Email tidak valid"), body("noHp").isMobilePhone().withMessage("Nomor handphone tidak valid")], async (req, res) => {
+router.put("/", authorization, [body("email").isEmail().withMessage("Email tidak valid"), body("noHp").isMobilePhone("id-ID").withMessage("Nomor handphone tidak valid")], async (req, res) => {
   try {
     const errors = validationResult(req);
     if (errors.errors.length !== 0) {
       return res.status(401).json(errors);
     }
 
-    const { namaDepan, namaBelakang, email, noHp, username_pengguna } = req.body;
+    const { namaDepan, namaBelakang, email, noHp, role, username_pengguna } = req.body;
 
-    const updateUser = await pool.query("UPDATE pengguna SET nama_depan_pengguna = $1, nama_belakang_pengguna = $2, email_pengguna = $3, no_hp_pengguna = $4 WHERE username_pengguna = $5", [
+    const updateUser = await pool.query("UPDATE pengguna SET nama_depan_pengguna = $1, nama_belakang_pengguna = $2, email_pengguna = $3, no_hp_pengguna = $4, role = $5 WHERE username_pengguna = $6", [
       namaDepan,
       namaBelakang,
       email,
       noHp,
+      role,
       username_pengguna,
     ]);
 
@@ -92,3 +94,71 @@ router.put("/changepassword", authorization, [body("newPassword").isLength({ min
     console.error(error.message);
   }
 });
+
+router.get("/all", authorization, async (req, res) => {
+  try {
+    const user = await pool.query("SELECT * FROM pengguna");
+
+    res.status(200).json({
+      status: "OK",
+      data: user.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.post(
+  "/admin",
+  authorization,
+  [
+    body("username_pengguna").custom(async (value) => {
+      const duplicateUsername = await pool.query("SELECT * FROM pengguna WHERE username_pengguna = $1", [value]);
+
+      if (duplicateUsername.rows.length !== 0) {
+        throw new Error("Username sudah digunakan");
+      }
+    }),
+    body("password").isLength({ min: 8 }).withMessage("Password harus minimal 8 karakter"),
+    body("email_pengguna").isEmail().withMessage("Email tidak valid"),
+    body("no_hp_pengguna").isMobilePhone("id-ID").withMessage("Nomor handphone tidak valid"),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (errors.errors.length !== 0) {
+        return res.status(401).json(errors);
+      }
+
+      const { username_pengguna, email_pengguna, password, nama_depan_pengguna, nama_belakang_pengguna, no_hp_pengguna, role } = req.body;
+
+      const duplicateUsername = await pool.query("SELECT * FROM pengguna WHERE username_pengguna = $1", [username_pengguna]);
+
+      if (duplicateUsername.rows.length !== 0) {
+        return res.status(400).json({
+          status: "bad request",
+          msg: "duplicate username",
+        });
+      }
+
+      const bcryptedPassword = await bcryptPassword(password);
+      console.log(bcryptedPassword);
+
+      const newAdmin = await pool.query("INSERT INTO pengguna (username_pengguna, email_pengguna, password, nama_depan_pengguna, nama_belakang_pengguna, no_hp_pengguna, role) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", [
+        username_pengguna,
+        email_pengguna,
+        bcryptedPassword,
+        nama_depan_pengguna,
+        nama_belakang_pengguna,
+        no_hp_pengguna,
+        role,
+      ]);
+
+      res.status(201).json({
+        status: "created",
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+);

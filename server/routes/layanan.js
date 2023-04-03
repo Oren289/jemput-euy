@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const pool = require("../db");
+const adminAuthorization = require("../middleware/adminAuthorization");
 const authorization = require("../middleware/authorization");
 
 router.post("/", authorization, async (req, res) => {
@@ -33,6 +34,64 @@ router.get("/", authorization, async (req, res) => {
     res.status(200).json({
       status: "ok",
       data: semuaLayanan.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.get("/:id", authorization, async (req, res) => {
+  try {
+    // console.log(req.params.id);
+    const detailLayanan = await pool.query("SELECT * FROM permintaan_layanan WHERE id_permintaan = $1", [req.params.id]);
+
+    res.status(200).json({
+      status: "ok",
+      data: detailLayanan.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.get("/jenis-sampah/:id", authorization, async (req, res) => {
+  try {
+    const jenisSampah = await pool.query("SELECT * FROM jenis_sampah WHERE id_permintaan = $1", [req.params.id]);
+
+    console.log(jenisSampah);
+
+    res.status(200).json({
+      status: "ok",
+      data: jenisSampah.rows,
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.delete("/:id", authorization, async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const deleteJenisSampah = await pool.query("DELETE FROM jenis_sampah WHERE id_permintaan = $1", [req.params.id]);
+    const deleteLayanan = await pool.query("DELETE FROM permintaan_layanan WHERE id_permintaan = $1", [req.params.id]);
+
+    res.status(200).json({
+      status: "ok",
+      msg: "deleted successfully",
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.put("/ganti-status/:id", authorization, async (req, res) => {
+  try {
+    console.log(req.body);
+    const gantiStatus = await pool.query("UPDATE permintaan_layanan SET status_layanan = $1 WHERE id_permintaan = $2", [req.body.value, req.params.id]);
+
+    res.status(200).json({
+      status: "ok",
+      msg: "updated successfully",
     });
   } catch (error) {
     console.error(error.message);

@@ -30,6 +30,7 @@ const RegisterForm = ({ setAuth }) => {
         nama_belakang_pengguna,
         email_pengguna,
         no_hp_pengguna,
+        role: "public",
       };
 
       const response = await AuthFinder.post("/register", body, {

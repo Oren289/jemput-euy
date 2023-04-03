@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const { body, validationResult, check } = require("express-validator");
 const authorization = require("../middleware/authorization");
+const bcryptPassword = require("../utils/bcryptPassword");
 
 // register route
 router.post(
@@ -20,7 +21,7 @@ router.post(
         return;
       }
       // destructuring req.body
-      const { username_pengguna, password, nama_depan_pengguna, nama_belakang_pengguna, email_pengguna, no_hp_pengguna, alamat_pengguna } = req.body;
+      const { username_pengguna, password, nama_depan_pengguna, nama_belakang_pengguna, email_pengguna, no_hp_pengguna, alamat_pengguna, role } = req.body;
 
       // check if user exists
       const user = await pool.query("SELECT * FROM pengguna WHERE username_pengguna=$1", [username_pengguna]);
@@ -30,17 +31,16 @@ router.post(
       }
 
       // bycrypting password
-      const saltRound = 10;
-      const salt = await bcrypt.genSalt(saltRound);
-      const bcryptPassword = await bcrypt.hash(password, salt);
+      const bcryptPassword = bcryptPassword(password);
 
-      const newPengguna = await pool.query("INSERT INTO pengguna (username_pengguna, password, nama_depan_pengguna, nama_belakang_pengguna, email_pengguna, no_hp_pengguna) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [
+      const newPengguna = await pool.query("INSERT INTO pengguna (username_pengguna, password, nama_depan_pengguna, nama_belakang_pengguna, email_pengguna, no_hp_pengguna, role) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", [
         username_pengguna,
         bcryptPassword,
         nama_depan_pengguna,
         nama_belakang_pengguna,
         email_pengguna,
         no_hp_pengguna,
+        role,
       ]);
 
       const initializeAlamat = await pool.query("INSERT INTO alamat (username_pengguna) VALUES ($1)", [username_pengguna]);
@@ -72,7 +72,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Username atau password salah");
     }
 
-    const token = jwtGenerator(pengguna.rows[0].username_pengguna);
+    const token = jwtGenerator(pengguna.rows[0].username_pengguna, pengguna.rows[0].role);
 
     res.json({
       token,

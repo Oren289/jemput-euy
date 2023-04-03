@@ -9,7 +9,7 @@ const AdminDashboard = ({ isOpen, setIsOpen }) => {
       <div className={isOpen ? "admin-body" : "admin-body-closed"}>
         <AdminNavbar />
         <div className='admin-content'>
-          <h2>Admin Dashboard</h2>
+          <h2 className='mb-3 mt-2'>Admin Dashboard</h2>
         </div>
       </div>
     </div>

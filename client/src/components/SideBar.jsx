@@ -19,14 +19,12 @@ const SideBar = ({ isOpen, setIsOpen }) => {
       <div className='sidebar-body mt-4'>
         {SidebarData.map((item, index) => {
           return (
-            <>
-              <NavLink to={item.link} key={index} className='link d-flex mb-2' activeClassName='active' style={{ textDecoration: "none" }}>
-                <div className='icon '>{item.icon}</div>
-                <div style={{ display: isOpen ? undefined : "none" }} className='link_text ms-2'>
-                  {item.title}
-                </div>
-              </NavLink>
-            </>
+            <NavLink to={item.link} key={index} className='link d-flex mb-2' activeClassName='active' style={{ textDecoration: "none" }}>
+              <div className='icon '>{item.icon}</div>
+              <div style={{ display: isOpen ? undefined : "none" }} className='link_text ms-2'>
+                {item.title}
+              </div>
+            </NavLink>
           );
         })}
       </div>

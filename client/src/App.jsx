@@ -19,10 +19,13 @@ import AdminDashboard from "./routes/admin/AdminDashboard";
 import { UserContextProvider } from "./context/UserContext";
 import { LayananContextProvider } from "./context/LayananContext";
 import DaftarLayanan from "./routes/admin/DaftarLayanan";
+import DaftarPengguna from "./routes/admin/DaftarPengguna";
+import DetailLayanan from "./routes/admin/DetailLayanan";
+import TambahAdmin from "./routes/admin/TambahAdmin";
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -30,7 +33,7 @@ function App() {
     setIsAuthenticated(boolean);
   };
 
-  const isAuth = async () => {
+  const isPublicAuth = async () => {
     try {
       const response = await fetch("http://localhost:5000/auth/is-verify", {
         method: "GET",
@@ -48,7 +51,7 @@ function App() {
   };
 
   useEffect(() => {
-    isAuth();
+    isPublicAuth();
   }, []);
 
   const logout = (e) => {
@@ -79,6 +82,9 @@ function App() {
                     <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
                     <Route exact path='/admin-dashboard' element={<AdminDashboard isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
                     <Route exact path='/admin-daftar-layanan' element={<DaftarLayanan isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
+                    <Route exact path='/admin-detail-layanan/:id' element={<DetailLayanan isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
+                    <Route exact path='/admin-daftar-pengguna' element={<DaftarPengguna isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
+                    <Route exact path='/admin-daftar-pengguna/tambah-admin' element={<TambahAdmin isOpen={isOpen} setIsOpen={setIsOpen} />}></Route>
                     {/* <Route exact path='/daftar-layanan' element={<DaftarLayananPage />}></Route> */}
                   </Routes>
                 </Router>

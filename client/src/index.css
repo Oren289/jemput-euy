@@ -49,6 +49,7 @@ code {
   display: flex;
   height: 150vh;
   position: relative;
+  background-color: #ffffff;
 }
 
 .admin-body {
@@ -64,7 +65,7 @@ code {
 }
 
 .admin-content {
-  margin: 2rem 5rem;
+  margin: 2rem 2rem;
 }
 
 .small-text {
@@ -72,7 +73,13 @@ code {
 }
 
 .card {
-  background-color: rgb(240, 240, 240);
+  background-color: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border: none;
+}
+
+.max-height-col {
+  min-height: 100%;
 }
 
 .form-control {
@@ -252,3 +259,7 @@ code {
 }
 
 /* END OF SIDEBAR */
+
+.full-height {
+  height: 100vh;
+}

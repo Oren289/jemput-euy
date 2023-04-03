@@ -80,7 +80,7 @@ const LayananForm = () => {
       });
 
       const parseRes = await response.json();
-      setNama(parseRes.nama_depan_pengguna);
+      setNama(parseRes.nama_depan_pengguna + " " + parseRes.nama_belakang_pengguna);
       setNoHp(parseRes.no_hp_pengguna);
     } catch (err) {
       console.error(err.message);

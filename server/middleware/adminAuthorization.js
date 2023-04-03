@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 
     console.log(payload);
 
-    if (payload.role !== "public") {
+    if (payload.role !== "admin") {
       return res.status(403).json("Not Authorized");
     }
 

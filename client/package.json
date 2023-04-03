@@ -11,6 +11,7 @@
     "@fullcalendar/timegrid": "^6.1.4",
     "@iconscout/react-unicons": "^1.1.6",
     "@mui/icons-material": "^5.11.9",
+    "@mui/lab": "^5.0.0-alpha.124",
     "@mui/material": "^5.11.10",
     "@mui/x-data-grid": "^5.17.25",
     "@nivo/bar": "^0.80.0",
