@@ -1,27 +1,32 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import LayananForm from "../components/LayananForm";
-import Navbar from "../components/Navbar";
-import { UserContext } from "../context/UserContext";
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import LayananForm from '../components/LayananForm';
+import Navbar from '../components/Navbar';
+import { UserContext } from '../context/UserContext';
 
 const Layanan = ({ logout }) => {
   const navigate = useNavigate();
-  const { username, getUsername } = useContext(UserContext);
+  const { username, getUserData } = useContext(UserContext);
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("http://localhost:5000/auth/is-verify", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/auth/is-verify', {
+        method: 'GET',
         headers: {
           token: localStorage.token,
         },
       });
 
       const parseRes = await response.json();
+      console.log(parseRes);
 
-      if (parseRes !== true) {
-        console.log("test");
-        navigate("/login");
+      if (parseRes === 'Not Authorized') {
+        console.log('test');
+        navigate('/login');
+      }
+
+      if (parseRes.role === 'admin' || parseRes.role === 'petugas') {
+        navigate('/forbidden');
       }
     } catch (error) {
       console.error(error.message);
@@ -29,7 +34,7 @@ const Layanan = ({ logout }) => {
   };
 
   useEffect(() => {
-    getUsername();
+    getUserData();
     checkAuth();
   }, []);
 

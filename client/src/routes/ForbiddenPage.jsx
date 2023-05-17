@@ -1,12 +1,12 @@
 import React from 'react';
 
-const PageNotFound = () => {
+const ForbiddenPage = () => {
   return (
     <div className='d-flex justify-content-center align-items-center full-height'>
-      <h1>404</h1>
-      <h4 className='ms-3'>Page not found! :(</h4>
+      <h1>403</h1>
+      <h4 className='ms-3'>Forbidden! :(</h4>
     </div>
   );
 };
 
-export default PageNotFound;
+export default ForbiddenPage;

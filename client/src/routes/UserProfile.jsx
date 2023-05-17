@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import EditProfileForm from "../components/EditProfileForm";
-import Navbar from "../components/Navbar";
-import { UserContext } from "../context/UserContext";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import EditProfileForm from '../components/EditProfileForm';
+import Navbar from '../components/Navbar';
+import { UserContext } from '../context/UserContext';
 
 const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("http://localhost:5000/auth/is-verify", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/auth/is-verify', {
+        method: 'GET',
         headers: {
           token: localStorage.token,
         },
@@ -22,9 +22,9 @@ const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
 
       console.log(parseRes);
 
-      if (parseRes !== true) {
-        console.log("test");
-        navigate("/login");
+      if (parseRes === 'Not Authorized') {
+        console.log('test');
+        navigate('/login');
       }
     } catch (error) {
       console.error(error.message);
@@ -33,8 +33,8 @@ const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
 
   const getUsername = async () => {
     try {
-      const response = await fetch("http://localhost:5000/dashboard/", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/dashboard/', {
+        method: 'GET',
         headers: { token: localStorage.token },
       });
 
@@ -47,8 +47,8 @@ const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
 
   const getUserData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user/", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/user/', {
+        method: 'GET',
         headers: {
           token: localStorage.token,
         },

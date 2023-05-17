@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from "react";
-import dropdownImg from "../images/blank-pp.png";
-import { toast } from "react-toastify";
+import React, { useEffect, useMemo, useState } from 'react';
+import dropdownImg from '../images/blank-pp.png';
+import { toast } from 'react-toastify';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import Map from './Map';
 
 const EditProfileForm = ({ userData }) => {
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries: ['places'] });
   const { username_pengguna, email_pengguna } = userData;
+  const [namaDepan, setNamaDepan] = useState('');
+  const [namaBelakang, setNamaBelakang] = useState('');
+  const [email, setEmail] = useState('');
+  const [noHp, setNoHp] = useState('');
 
-  const [namaDepan, setNamaDepan] = useState("");
-  const [namaBelakang, setNamaBelakang] = useState("");
-  const [email, setEmail] = useState("");
-  const [noHp, setNoHp] = useState("");
+  const [kecamatan, setKecamatan] = useState('Pilih kecamatan di Kota Bandung');
+  const [kelurahan, setKelurahan] = useState('');
+  const [keteranganAlamat, setKeteranganAlamat] = useState('');
 
-  const [kecamatan, setKecamatan] = useState("Pilih kecamatan di Kota Bandung");
-  const [kelurahan, setKelurahan] = useState("");
-  const [keteranganAlamat, setKeteranganAlamat] = useState("");
+  const [newPass, setNewPass] = useState('');
+  const [retypePass, setRetypePass] = useState('');
+  const [passErrorMsg, setPassErrorMsg] = useState('');
 
-  const [newPass, setNewPass] = useState("");
-  const [retypePass, setRetypePass] = useState("");
-  const [passErrorMsg, setPassErrorMsg] = useState("");
-
-  const [redOutline, setRedOutline] = useState("");
-  const [disabledBtn, setDisabledBtn] = useState("disabled");
+  const [redOutline, setRedOutline] = useState('');
+  const [disabledBtn, setDisabledBtn] = useState('disabled');
 
   const getUserData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user/", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/user/', {
+        method: 'GET',
         headers: {
           token: localStorage.token,
         },
@@ -42,8 +44,8 @@ const EditProfileForm = ({ userData }) => {
 
   const getAddressData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user/address", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/user/address', {
+        method: 'GET',
         headers: {
           token: localStorage.token,
         },
@@ -59,52 +61,52 @@ const EditProfileForm = ({ userData }) => {
   };
 
   const functions = () => {
-    const myAccountPill = document.getElementById("my-account-pill");
-    const myAccountCard = document.getElementById("my-account-card");
+    const myAccountPill = document.getElementById('my-account-pill');
+    const myAccountCard = document.getElementById('my-account-card');
 
-    const myAddressPill = document.getElementById("my-address-pill");
-    const myAddressCard = document.getElementById("my-address-card");
+    const myAddressPill = document.getElementById('my-address-pill');
+    const myAddressCard = document.getElementById('my-address-card');
 
-    const changePasswordPill = document.getElementById("change-password-pill");
-    const changePasswordCard = document.getElementById("change-password-card");
+    const changePasswordPill = document.getElementById('change-password-pill');
+    const changePasswordCard = document.getElementById('change-password-card');
 
-    myAccountPill.addEventListener("click", (e) => {
-      myAccountPill.classList.remove("active-pill");
-      myAddressPill.classList.remove("active-pill");
-      changePasswordPill.classList.remove("active-pill");
-      myAccountPill.classList.add("active-pill");
+    myAccountPill.addEventListener('click', (e) => {
+      myAccountPill.classList.remove('active-pill');
+      myAddressPill.classList.remove('active-pill');
+      changePasswordPill.classList.remove('active-pill');
+      myAccountPill.classList.add('active-pill');
 
-      myAccountCard.classList.remove("d-none");
-      myAddressCard.classList.remove("d-none");
-      changePasswordCard.classList.remove("d-none");
-      myAddressCard.classList.add("d-none");
-      changePasswordCard.classList.add("d-none");
+      myAccountCard.classList.remove('d-none');
+      myAddressCard.classList.remove('d-none');
+      changePasswordCard.classList.remove('d-none');
+      myAddressCard.classList.add('d-none');
+      changePasswordCard.classList.add('d-none');
     });
 
-    myAddressPill.addEventListener("click", (e) => {
-      myAccountPill.classList.remove("active-pill");
-      myAddressPill.classList.remove("active-pill");
-      changePasswordPill.classList.remove("active-pill");
-      myAddressPill.classList.add("active-pill");
+    myAddressPill.addEventListener('click', (e) => {
+      myAccountPill.classList.remove('active-pill');
+      myAddressPill.classList.remove('active-pill');
+      changePasswordPill.classList.remove('active-pill');
+      myAddressPill.classList.add('active-pill');
 
-      myAccountCard.classList.remove("d-none");
-      myAddressCard.classList.remove("d-none");
-      changePasswordCard.classList.remove("d-none");
-      myAccountCard.classList.add("d-none");
-      changePasswordCard.classList.add("d-none");
+      myAccountCard.classList.remove('d-none');
+      myAddressCard.classList.remove('d-none');
+      changePasswordCard.classList.remove('d-none');
+      myAccountCard.classList.add('d-none');
+      changePasswordCard.classList.add('d-none');
     });
 
-    changePasswordPill.addEventListener("click", (e) => {
-      myAccountPill.classList.remove("active-pill");
-      myAddressPill.classList.remove("active-pill");
-      changePasswordPill.classList.remove("active-pill");
-      changePasswordPill.classList.add("active-pill");
+    changePasswordPill.addEventListener('click', (e) => {
+      myAccountPill.classList.remove('active-pill');
+      myAddressPill.classList.remove('active-pill');
+      changePasswordPill.classList.remove('active-pill');
+      changePasswordPill.classList.add('active-pill');
 
-      myAccountCard.classList.remove("d-none");
-      myAddressCard.classList.remove("d-none");
-      changePasswordCard.classList.remove("d-none");
-      myAddressCard.classList.add("d-none");
-      myAccountCard.classList.add("d-none");
+      myAccountCard.classList.remove('d-none');
+      myAddressCard.classList.remove('d-none');
+      changePasswordCard.classList.remove('d-none');
+      myAddressCard.classList.add('d-none');
+      myAccountCard.classList.add('d-none');
     });
   };
 
@@ -113,18 +115,18 @@ const EditProfileForm = ({ userData }) => {
     try {
       const body = { username_pengguna, namaDepan, namaBelakang, email, noHp };
 
-      const response = await fetch("http://localhost:5000/user/", {
-        method: "PUT",
+      const response = await fetch('http://localhost:5000/user/', {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          'Content-Type': 'application/json',
+          token: localStorage.getItem('token'),
         },
         body: JSON.stringify(body),
       });
 
       const parseRes = await response.json();
       if (parseRes.status) {
-        toast.success("Data pengguna berhasil diperbarui");
+        toast.success('Data pengguna berhasil diperbarui');
       } else {
         toast.error(parseRes.error);
       }
@@ -144,18 +146,18 @@ const EditProfileForm = ({ userData }) => {
     try {
       const body = { kecamatan, kelurahan, keteranganAlamat };
 
-      const response = await fetch("http://localhost:5000/user/address", {
-        method: "PUT",
+      const response = await fetch('http://localhost:5000/user/address', {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          'Content-Type': 'application/json',
+          token: localStorage.getItem('token'),
         },
         body: JSON.stringify(body),
       });
 
       const parseRes = await response.json();
       if (parseRes.status) {
-        toast.success("Data alamat berhasil diperbarui");
+        toast.success('Data alamat berhasil diperbarui');
       } else {
         toast.error(parseRes.error);
       }
@@ -175,33 +177,33 @@ const EditProfileForm = ({ userData }) => {
     setRetypePass(e.target.value);
 
     if (newRetypePass !== newPass) {
-      setPassErrorMsg("Password tidak cocok!");
-      setRedOutline("red-outline");
-      setDisabledBtn("disabled");
+      setPassErrorMsg('Password tidak cocok!');
+      setRedOutline('red-outline');
+      setDisabledBtn('disabled');
     } else if (newRetypePass === newPass) {
-      setPassErrorMsg("");
-      setRedOutline("");
-      setDisabledBtn("");
+      setPassErrorMsg('');
+      setRedOutline('');
+      setDisabledBtn('');
     }
   };
 
   const onNewPassSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (newPass === "") {
-        return toast.error("Password tidak boleh kosong!");
+      if (newPass === '') {
+        return toast.error('Password tidak boleh kosong!');
       }
 
       if (newPass !== retypePass) {
-        return toast.error("Password tidak cocok!");
+        return toast.error('Password tidak cocok!');
       }
 
       const body = { newPass };
 
-      const response = await fetch("http://localhost:5000/user/changepassword", {
-        method: "PUT",
+      const response = await fetch('http://localhost:5000/user/changepassword', {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           token: localStorage.token,
         },
         body: JSON.stringify(body),
@@ -211,12 +213,12 @@ const EditProfileForm = ({ userData }) => {
       console.log(parseRes);
 
       if (parseRes.status) {
-        toast.success("Password berhasil diperbarui");
-        setNewPass("");
-        setRetypePass("");
-        setRedOutline("disabled");
+        toast.success('Password berhasil diperbarui');
+        setNewPass('');
+        setRetypePass('');
+        setRedOutline('disabled');
       } else {
-        toast.error("Password baru tidak boleh sama dengan yang lama!");
+        toast.error('Password baru tidak boleh sama dengan yang lama!');
       }
     } catch (error) {
       console.error(error.message);
@@ -401,6 +403,14 @@ const EditProfileForm = ({ userData }) => {
                   onChange={(e) => setKeteranganAlamat(e.target.value)}
                 ></textarea>
               </div>
+            </div>
+            <div className='row mt-3'>
+              <div className='col-md-3'>
+                <label htmlFor='koordinat_alamat' className='col-form-label'>
+                  Titik Alamat
+                </label>
+              </div>
+              <div className='col'>{!isLoaded ? <div>Loading...</div> : <Map></Map>}</div>
             </div>
             <div className='d-flex justify-content-end mt-4'>
               <button className='btn btn-info' type='submit'>

@@ -1,5 +1,5 @@
 import Home from '@mui/icons-material/Home';
-import { Breadcrumbs, IconButton, Link, Typography } from '@mui/material';
+import { Breadcrumbs, Link, Typography } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,28 +7,14 @@ import AdminNavbar from '../../components/AdminNavbar';
 import Sidebar from '../../components/Sidebar';
 import Select from 'react-select';
 import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
+import PetugasSidebar from '../../components/PetugasSidebar';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  border: 'none',
-  outline: 'none',
-};
-
-const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
+const DetailLayananPetugas = ({ isOpen, setIsOpen, logout }) => {
   const [dataLayanan, setDataLayanan] = useState({});
   const [dataSampah, setDataSampah] = useState([]);
+  const [usernamePetugas, setUsernamePetugas] = useState([]);
   const [statusLayanan, setStatusLayanan] = useState({ value: '' });
-  const [listPetugas, setListPetugas] = useState([]);
-  const [penanggungjawab, setPenanggungjawab] = useState('');
-  const [open, setOpen] = useState(false);
   const id = useParams();
 
   const navigate = useNavigate();
@@ -50,39 +36,9 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
         navigate('/login');
       }
 
-      if (parseRes.role === 'public' || parseRes.role === 'petugas') {
+      if (parseRes.role === 'public' || parseRes.role === 'admin') {
         navigate('/forbidden');
       }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const getPetugas = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/user/all', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          token: localStorage.token,
-        },
-      });
-
-      const parseRes = await response.json();
-      const dataPetugas = parseRes.data.filter((item) => item.role === 'petugas');
-      let arrayPetugas = [];
-      dataPetugas.forEach((petugas) => {
-        arrayPetugas.push({ value: petugas.username_pengguna, label: petugas.username_pengguna });
-      });
-      setListPetugas(arrayPetugas);
     } catch (error) {
       console.error(error.message);
     }
@@ -100,6 +56,7 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
 
       const parseRes = await response.json();
       setDataLayanan(parseRes.data[0]);
+      setUsernamePetugas(parseRes.data[0].username_petugas);
       setStatusLayanan({ value: parseRes.data[0].status_layanan, label: parseRes.data[0].status_layanan });
     } catch (error) {
       console.error(error.message);
@@ -108,7 +65,7 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
 
   const getJenisSampah = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/layanan/jenis-sampah/${id.id}`, {
+      const response = await fetch(`http://localhost:5000/layanan/jenis-sampah`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +83,7 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const body = { statusLayanan };
+      const body = { statusLayanan, usernamePetugas };
 
       const response = await fetch(`http://localhost:5000/layanan/ganti-status/${id.id}`, {
         method: 'PUT',
@@ -139,34 +96,13 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
 
       const parseRes = await response.json();
       toast.success('Data berhasil diperbarui!');
-      navigate('/admin-daftar-layanan');
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const onUsernamePetugasSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/layanan/update-petugas/${id.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token: localStorage.token,
-        },
-        body: JSON.stringify(penanggungjawab),
-      });
-
-      const parseRes = await response.json();
-      toast.success('Data berhasil diperbarui!');
-      navigate('/admin-daftar-layanan');
+      navigate('/petugas-antrean-jemput');
     } catch (error) {
       console.error(error.message);
     }
   };
 
   const selectOptions = [
-    { value: 'Menunggu proses review', label: 'Menunggu proses review' },
     { value: 'Menunggu penjemputan', label: 'Menunggu penjemputan' },
     { value: 'Sedang dijemput', label: 'Sedang dijemput' },
     { value: 'Selesai', label: 'Selesai' },
@@ -177,21 +113,20 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
     checkAuth();
     getDataLayanan();
     getJenisSampah();
-    getPetugas();
   }, []);
 
   return (
     <div className='admin-container'>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <PetugasSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className={isOpen ? 'admin-body' : 'admin-body-closed'}>
         <AdminNavbar logout={logout} />
         <div className='admin-content'>
           <Breadcrumbs aria-label='breadcrumb'>
-            <Link underline='hover' color='inherit' href='/admin-dashboard'>
+            <Link underline='hover' color='inherit' href='/petugas-dashboard'>
               <Home></Home>
             </Link>
-            <Link underline='hover' color='inherit' href='/admin-daftar-layanan'>
-              Daftar Layanan
+            <Link underline='hover' color='inherit' href='/petugas-antrean-jemput'>
+              Antrean Jemput
             </Link>
             <Typography color='text.primary'>Detail Layanan ({dataLayanan.nama_pemohon})</Typography>
           </Breadcrumbs>
@@ -287,12 +222,7 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
                       </div>
                       <div className='row mb-3'>
                         <div className='col-4'>Penanggungjawab</div>
-                        <div className='col d-flex'>
-                          <div className='me-2'>{dataLayanan.username_petugas !== null ? dataLayanan.username_petugas : <div className='text-danger'>belum ditetapkan</div>}</div>
-                          <div onClick={handleOpen}>
-                            <EditIcon></EditIcon>
-                          </div>
-                        </div>
+                        <div className='col'>{dataLayanan.username_petugas !== null ? dataLayanan.username_petugas : <div className='text-danger'>belum ditetapkan</div>}</div>
                       </div>
                       <form onSubmit={(e) => onSubmitHandler(e)}>
                         <div className='row mb-3'>
@@ -302,7 +232,7 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
                               <Select className='basic-single me-2' classNamePrefix='select' value={statusLayanan} name='statusLayanan' options={selectOptions} onChange={(item) => setStatusLayanan(item)} />
                             </div>
                             <div className='col-2'>
-                              <button className='btn btn-info d-flex align-items-center'>
+                              <button type='submit' className='btn btn-info d-flex align-items-center'>
                                 <SaveIcon></SaveIcon>
                               </button>
                             </div>
@@ -318,27 +248,8 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
           </div>
         </div>
       </div>
-
-      <Modal open={open} onClose={handleClose} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
-        <form onSubmit={(e) => onUsernamePetugasSubmitHandler(e)}>
-          <Box className='card' sx={style}>
-            <div className='card-header'>Penanggungjawab</div>
-            <div className='card-body'>
-              <Select className='basic-single me-2' classNamePrefix='select' value={penanggungjawab} name='penanggungjawab' options={listPetugas} onChange={(item) => setPenanggungjawab(item)} />
-            </div>
-            <div className='card-footer d-flex justify-content-end'>
-              <button type='button' onClick={handleClose} className='btn btn-danger me-2'>
-                Batal
-              </button>
-              <button type='submit' className='btn btn-success'>
-                Kirim
-              </button>
-            </div>
-          </Box>
-        </form>
-      </Modal>
     </div>
   );
 };
 
-export default DetailLayanan;
+export default DetailLayananPetugas;

@@ -1,29 +1,23 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminNavbar from '../../components/AdminNavbar';
-import Sidebar from '../../components/Sidebar';
-import { DataGrid } from '@mui/x-data-grid';
 import moment from 'moment';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { DataGrid } from '@mui/x-data-grid';
 import Home from '@mui/icons-material/Home';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import AddIcon from '@mui/icons-material/Add';
+import { Breadcrumbs, Link, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import PetugasSidebar from '../../components/PetugasSidebar';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
+import TabContext from '@mui/lab/TabContext/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { Breadcrumbs, IconButton, Link, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
-const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
+const AntreanJemput = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
-
-  const [pengguna, setPengguna] = useState([]);
-  const [publicPengguna, setPublicPengguna] = useState([]);
-  const [adminPengguna, setAdminPengguna] = useState([]);
-  const [petugasPengguna, setPetugasPengguna] = useState([]);
   const [value, setValue] = React.useState('1');
+  const [antreanJemput, setAntreanJemput] = useState('');
+  const [untukDijemput, setUntukDijemput] = useState('');
+  const [sedangDijemput, setSedangDijemput] = useState('');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -46,7 +40,7 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
         navigate('/login');
       }
 
-      if (parseRes.role === 'public' || parseRes.role === 'petugas') {
+      if (parseRes.role === 'public' || parseRes.role === 'admin') {
         navigate('/forbidden');
       }
     } catch (error) {
@@ -54,9 +48,9 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
     }
   };
 
-  const getPengguna = async () => {
+  const getAntreanJemput = async () => {
     try {
-      const response = await fetch('http://localhost:5000/user/all', {
+      const response = await fetch('http://localhost:5000/layanan/antrean-jemput', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -65,97 +59,66 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
       });
 
       const parseRes = await response.json();
-      setPengguna(parseRes.data);
-      setPublicPengguna(parseRes.data.filter((item) => item.role === 'public'));
-      setAdminPengguna(parseRes.data.filter((item) => item.role === 'admin'));
-      setPetugasPengguna(parseRes.data.filter((item) => item.role === 'petugas'));
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const deleteLayanan = async (e, username) => {
-    e.stopPropagation();
-    try {
-      const response = await fetch(`http://localhost:5000/layanan/${username}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          token: localStorage.token,
-        },
-      });
-
-      const parseRes = await response.json();
-      console.log(parseRes);
-      setPengguna(pengguna.filter((pengguna) => pengguna.username_pengguna !== username));
+      setAntreanJemput(parseRes.data);
+      setUntukDijemput(parseRes.data.filter((item) => item.status_layanan === 'Menunggu penjemputan'));
+      setSedangDijemput(parseRes.data.filter((item) => item.status_layanan === 'Sedang dijemput'));
     } catch (error) {
       console.error(error.message);
     }
   };
 
   const columns = [
+    { field: 'urutan', headerName: 'Urutan', width: 70 },
+    { field: 'id_permintaan', headerName: 'Req. ID', width: 300, sortable: false },
+    { field: 'tanggal_diterima', headerName: 'Tgl. Diterima', width: 110, renderCell: (params) => moment(params.row.tanggal_diterima).format('YYYY-MM-DD') },
     {
-      field: 'username_pengguna',
-      headerName: 'Username Pengguna',
+      field: 'nama_pemohon',
+      headerName: 'Nama Pemohon',
       width: 200,
     },
     {
-      field: 'nama_pengguna',
-      headerName: 'Nama Pengguna',
-      width: 300,
-      renderCell: (params) => {
-        return (
-          <div>
-            {params.row.nama_depan_pengguna} {params.row.nama_belakang_pengguna}
-          </div>
-        );
-      },
-    },
-    {
-      field: 'email_pengguna',
-      headerName: 'Email',
-      width: 250,
-    },
-    {
-      field: 'no_hp_pengguna',
+      field: 'no_hp_pemohon',
       headerName: 'No. Hp',
+      width: 120,
       sortable: false,
-      width: 200,
     },
     {
-      field: 'role',
-      headerName: 'Role',
-      sortable: false,
-      width: 100,
+      field: 'alamat_kecamatan',
+      headerName: 'Kecamatan',
+      width: 120,
     },
     {
-      field: 'aksi',
-      headerName: 'Aksi',
-      sortable: false,
-      width: 100,
+      field: 'jumlah_sampah',
+      headerName: 'Jml. Sampah',
+      type: 'number',
+      width: 110,
+    },
+    {
+      field: 'status_layanan',
+      headerName: 'Status',
+      width: 160,
       renderCell: (params) => {
-        return (
-          <div>
-            <IconButton aria-label='view'>
-              <VisibilityIcon />
-            </IconButton>
-            <IconButton aria-label='delete' color='error'>
-              <DeleteIcon onClick={(e) => deleteLayanan(e, params.row.id_permintaan)} />
-            </IconButton>
-          </div>
-        );
+        if (params.row.status_layanan === 'Menunggu penjemputan') {
+          return <div className='badge text-bg-info text-light'>{params.row.status_layanan}</div>;
+        } else {
+          return <div className='badge text-bg-primary'>{params.row.status_layanan}</div>;
+        }
       },
     },
   ];
 
+  const handleEvent = (params) => {
+    navigate(`/petugas-detail-layanan/${params.row.id_permintaan}`);
+  };
+
   useEffect(() => {
     checkAuth();
-    getPengguna();
+    getAntreanJemput();
   }, []);
 
   return (
     <div className='admin-container'>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <PetugasSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className={isOpen ? 'admin-body' : 'admin-body-closed'}>
         <AdminNavbar logout={logout} />
         <div className='admin-content'>
@@ -163,27 +126,27 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
             <Link underline='hover' color='inherit' href='/admin-dashboard'>
               <Home></Home>
             </Link>
-            <Typography color='text.primary'>Daftar Pengguna</Typography>
+            <Typography color='text.primary'>Antrean Jemput</Typography>
           </Breadcrumbs>
-          <h2 className='mb-3 mt-2'>Daftar Pengguna</h2>
+          <h2 className='mb-3 mt-2'>Antrean Jemput</h2>
           <div className='shadow-sm' style={{ width: '100%' }}>
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList onChange={handleChange} aria-label='lab API tabs example'>
                   <Tab label='Semua' value='1' />
-                  <Tab label='Public' value='2' />
-                  <Tab label='Admin' value='3' />
-                  <Tab label='Petugas' value='4' />
+                  <Tab label='Untuk dijemput' value='2' />
+                  <Tab label='Sedang Dijemput' value='3' />
                 </TabList>
               </Box>
               <TabPanel value='1'>
                 <div style={{ height: 600 }}>
                   <DataGrid
-                    rows={pengguna}
+                    onRowClick={handleEvent}
+                    rows={antreanJemput}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
-                    getRowId={(row) => row.username_pengguna}
+                    getRowId={(row) => row.id_permintaan}
                     sx={{
                       '& .MuiDataGrid-root': {
                         backgroundColor: '#f6f6f6',
@@ -206,11 +169,12 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
               <TabPanel value='2'>
                 <div style={{ height: 600 }}>
                   <DataGrid
-                    rows={publicPengguna}
+                    onRowClick={handleEvent}
+                    rows={untukDijemput}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
-                    getRowId={(row) => row.username_pengguna}
+                    getRowId={(row) => row.id_permintaan}
                     sx={{
                       '& .MuiDataGrid-root': {
                         backgroundColor: '#f6f6f6',
@@ -231,52 +195,14 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
                 </div>
               </TabPanel>
               <TabPanel value='3'>
-                <div className='d-flex justify-content-end'>
-                  <button onClick={() => navigate('/admin-daftar-pengguna/tambah-admin')} className='btn btn-sm btn-info d-flex align-items-center mb-3'>
-                    <AddIcon className='me-1' />
-                    Tambah Admin
-                  </button>
-                </div>
                 <div style={{ height: 600 }}>
                   <DataGrid
-                    rows={adminPengguna}
+                    onRowClick={handleEvent}
+                    rows={sedangDijemput}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
-                    getRowId={(row) => row.username_pengguna}
-                    sx={{
-                      '& .MuiDataGrid-root': {
-                        backgroundColor: '#f6f6f6',
-                      },
-                      '& .MuiDataGrid-row': {
-                        '&:nth-of-type(even)': { backgroundColor: 'rgba(222, 222, 222, .7)' },
-                        '&:hover': { backgroundColor: 'rgba(215, 215, 215, .7)' },
-                      },
-                      '& .MuiDataGrid-columnHeaders': {
-                        backgroundColor: '#205295',
-                        color: 'whitesmoke',
-                        '& .MuiSvgIcon-root': {
-                          color: 'whitesmoke',
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              </TabPanel>
-              <TabPanel value='4'>
-                <div className='d-flex justify-content-end'>
-                  <button onClick={() => navigate('/admin-daftar-pengguna/tambah-petugas')} className='btn btn-sm btn-info d-flex align-items-center mb-3'>
-                    <AddIcon className='me-1' />
-                    Tambah Petugas
-                  </button>
-                </div>
-                <div style={{ height: 600 }}>
-                  <DataGrid
-                    rows={petugasPengguna}
-                    columns={columns}
-                    pageSize={10}
-                    rowsPerPageOptions={[10]}
-                    getRowId={(row) => row.username_pengguna}
+                    getRowId={(row) => row.id_permintaan}
                     sx={{
                       '& .MuiDataGrid-root': {
                         backgroundColor: '#f6f6f6',
@@ -304,4 +230,4 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
   );
 };
 
-export default DaftarPengguna;
+export default AntreanJemput;

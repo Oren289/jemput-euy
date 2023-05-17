@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
-import dropdownImg from "../images/blank-pp.png";
+import React, { useContext, useEffect } from 'react';
+import dropdownImg from '../images/blank-pp.png';
+import { UserContext } from '../context/UserContext';
 
-const AdminNavbar = ({ username, logout }) => {
+const AdminNavbar = ({ logout }) => {
+  const { surname } = useContext(UserContext);
+
   return (
     <div className='container d-flex justify-content-between'>
       <div></div>
@@ -11,7 +14,7 @@ const AdminNavbar = ({ username, logout }) => {
         </button>
         <ul className='dropdown-menu'>
           <li>
-            <span className='dropdown-item-text'>Halo, {username} &#128075;</span>
+            <span className='dropdown-item-text'>Halo, {surname} &#128075;</span>
           </li>
           <li>
             <hr className='dropdown-divider' />

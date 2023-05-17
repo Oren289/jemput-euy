@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const LaporForm = () => {
   const [inputs, setInputs] = useState({
-    nama_pelapor: "",
-    nomor_kontak: "",
-    deskripsi: "",
-    jenis_aduan: "default",
+    nama_pelapor: '',
+    nomor_kontak: '',
+    deskripsi: '',
+    alamat_lokasi: '',
+    jenis_aduan: 'default',
   });
 
-  const { nama_pelapor, nomor_kontak, deskripsi, jenis_aduan } = inputs;
+  const { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan } = inputs;
 
   const onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -17,17 +19,19 @@ const LaporForm = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const body = { nama_pelapor, nomor_kontak, deskripsi, jenis_aduan };
+      const body = { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan };
 
-      const response = await fetch("http://localhost:5000/lapor/", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/lapor/', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       });
 
-      setInputs({ nama_pelapor: "", nomor_kontak: "", deskripsi: "", jenis_aduan: "" });
+      setInputs({ nama_pelapor: '', nomor_kontak: '', deskripsi: '', alamat_lokasi: '', jenis_aduan: '' });
+
+      toast.success('Aduan berhasil dikirim!');
     } catch (error) {
       console.error(error.message);
     }
@@ -68,10 +72,10 @@ const LaporForm = () => {
           </div>
           <div className='row mb-3'>
             <div className='col-md-4 text-end'>
-              <label htmlFor='foto_aduan'>Foto</label>
+              <label htmlFor='alamat_lokasi'>Alamat Lokasi</label>
             </div>
             <div className='col-md-8'>
-              <input type='file' name='foto_aduan' className='form-control no-outline' accept='image/*' />
+              <textarea name='alamat_lokasi' className='form-control no-outline' id='alamat_lokasi' cols='30' rows='5' value={alamat_lokasi} onChange={(e) => onChange(e)} required></textarea>
             </div>
           </div>
           <div className='row mb-3'>

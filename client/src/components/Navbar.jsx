@@ -1,21 +1,21 @@
-import React, { useEffect } from "react";
-import dropdownImg from "../images/blank-pp.png";
+import React, { useEffect } from 'react';
+import dropdownImg from '../images/blank-pp.png';
 
 const Navbar = ({ username, logout }) => {
   const dropdownToggle = () => {
-    const dropdown = document.getElementById("profile_dropdown");
-    const buttonGroup = document.getElementById("login_register_buttongroup");
+    const dropdown = document.getElementById('profile_dropdown');
+    const buttonGroup = document.getElementById('login_register_buttongroup');
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (username) {
-      buttonGroup.classList.remove("d-none");
-      dropdown.classList.remove("d-none");
-      buttonGroup.classList.add("d-none");
+      buttonGroup.classList.remove('d-none');
+      dropdown.classList.remove('d-none');
+      buttonGroup.classList.add('d-none');
     } else {
-      dropdown.classList.remove("d-none");
-      buttonGroup.classList.remove("d-none");
-      dropdown.classList.add("d-none");
+      dropdown.classList.remove('d-none');
+      buttonGroup.classList.remove('d-none');
+      dropdown.classList.add('d-none');
     }
   };
 
@@ -68,7 +68,7 @@ const Navbar = ({ username, logout }) => {
                   </a>
                 </li>
                 <li>
-                  <a href='#' className='dropdown-item'>
+                  <a href='/riwayat' className='dropdown-item'>
                     Riwayat
                   </a>
                 </li>

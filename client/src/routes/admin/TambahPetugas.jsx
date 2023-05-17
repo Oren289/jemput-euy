@@ -8,7 +8,7 @@ import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const TambahAdmin = ({ isOpen, setIsOpen, logout }) => {
+const TambahPetugas = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     username_pengguna: '',
@@ -17,7 +17,7 @@ const TambahAdmin = ({ isOpen, setIsOpen, logout }) => {
     nama_depan_pengguna: '',
     nama_belakang_pengguna: '',
     no_hp_pengguna: '',
-    role: 'admin',
+    role: 'petugas',
   });
 
   const [usernameError, setUsernameError] = useState({
@@ -110,7 +110,7 @@ const TambahAdmin = ({ isOpen, setIsOpen, logout }) => {
 
       if (parseRes.status === 'created') {
         setInputs({ username_pengguna: '', email_pengguna: '', password: '', nama_depan_pengguna: '', nama_belakang_pengguna: '', no_hp_pengguna: '', role: 'admin' });
-        toast.success('Berhasil menambahkan admin!');
+        toast.success('Berhasil menambahkan petugas!');
       }
     } catch (error) {
       console.error(error.message);
@@ -134,9 +134,9 @@ const TambahAdmin = ({ isOpen, setIsOpen, logout }) => {
             <Link underline='hover' color='inherit' href='/admin-daftar-pengguna'>
               Daftar Pengguna
             </Link>
-            <Typography color='text.primary'>Tambah Admin</Typography>
+            <Typography color='text.primary'>Tambah Petugas</Typography>
           </Breadcrumbs>
-          <h2 className='mb-3 mt-2'>Tambah Admin</h2>
+          <h2 className='mb-3 mt-2'>Tambah Petugas</h2>
           <div className='card'>
             <div className='card-body'>
               <form method='POST' onSubmit={(e) => onSubmitHandler(e)}>
@@ -231,4 +231,4 @@ const TambahAdmin = ({ isOpen, setIsOpen, logout }) => {
   );
 };
 
-export default TambahAdmin;
+export default TambahPetugas;
