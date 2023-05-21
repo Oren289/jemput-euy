@@ -4,6 +4,7 @@ import LayananForm from '../components/LayananForm';
 import Navbar from '../components/Navbar';
 import { UserContext } from '../context/UserContext';
 import ListRiwayat from '../components/ListRiwayat';
+import Footer from '../components/Footer';
 
 const Riwayat = ({ logout }) => {
   const navigate = useNavigate();
@@ -78,18 +79,21 @@ const Riwayat = ({ logout }) => {
   }, []);
 
   return (
-    <div>
-      <Navbar logout={logout} username={username}></Navbar>
-      <div className='container px-md-5 mt-5'>
-        <div className='card'>
-          <div className='card-header'>
-            <h3 className='fw-bold mb-0'>Riwayat</h3>
-          </div>
-          <div className='card-body'>
-            <ListRiwayat riwayat={riwayat} dataSampah={dataSampah}></ListRiwayat>
+    <div className='page-container'>
+      <div className='content-wrap'>
+        <Navbar logout={logout} username={username}></Navbar>
+        <div className='container px-md-5 mt-5'>
+          <div className='card'>
+            <div className='card-header'>
+              <h3 className='fw-bold mb-0'>Riwayat</h3>
+            </div>
+            <div className='card-body'>
+              <ListRiwayat riwayat={riwayat} dataSampah={dataSampah}></ListRiwayat>
+            </div>
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

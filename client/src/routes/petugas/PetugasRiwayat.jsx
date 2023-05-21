@@ -6,6 +6,8 @@ import Home from '@mui/icons-material/Home';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import FooterAdmin from '../../components/FooterAdmin';
+import PetugasNavbar from '../../components/PetugasNavbar';
 
 const PetugasRiwayat = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -102,7 +104,7 @@ const PetugasRiwayat = ({ isOpen, setIsOpen, logout }) => {
     <div className='admin-container'>
       <PetugasSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className={isOpen ? 'admin-body' : 'admin-body-closed'}>
-        <AdminNavbar logout={logout} />
+        <PetugasNavbar logout={logout} />
         <div className='admin-content'>
           <Breadcrumbs aria-label='breadcrumb'>
             <Link underline='hover' color='inherit' href='/petugas-dashboard'>
@@ -138,6 +140,7 @@ const PetugasRiwayat = ({ isOpen, setIsOpen, logout }) => {
             />
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

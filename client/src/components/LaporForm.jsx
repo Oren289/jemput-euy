@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useLoadScript } from '@react-google-maps/api';
+import Map from './Map';
+
+const libraries = ['places'];
 
 const LaporForm = () => {
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries });
   const [inputs, setInputs] = useState({
     nama_pelapor: '',
     nomor_kontak: '',
@@ -9,6 +14,7 @@ const LaporForm = () => {
     alamat_lokasi: '',
     jenis_aduan: 'default',
   });
+  const [coordinate, setCoordinate] = useState({ lat: '', lng: '' });
 
   const { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan } = inputs;
 
@@ -19,7 +25,7 @@ const LaporForm = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const body = { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan };
+      const body = { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan, coordinate };
 
       const response = await fetch('http://localhost:5000/lapor/', {
         method: 'POST',
@@ -30,6 +36,7 @@ const LaporForm = () => {
       });
 
       setInputs({ nama_pelapor: '', nomor_kontak: '', deskripsi: '', alamat_lokasi: '', jenis_aduan: '' });
+      setCoordinate({ lat: '', lng: '' });
 
       toast.success('Aduan berhasil dikirim!');
     } catch (error) {
@@ -79,6 +86,10 @@ const LaporForm = () => {
             </div>
           </div>
           <div className='row mb-3'>
+            <div className='col-md-4 text-end'></div>
+            <div className='col-md-8'>{!isLoaded ? <div>Loading...</div> : <Map coordinate={coordinate} setCoordinate={setCoordinate}></Map>}</div>
+          </div>
+          <div className='row mb-3'>
             <div className='col-md-4 text-end'>
               <label htmlFor='jenis_aduan'>Jenis aduan</label>
             </div>
@@ -101,7 +112,7 @@ const LaporForm = () => {
           <div className='row mt-4'>
             <div className='col-md-4'></div>
             <div className='col-md-8 text-end'>
-              <input className='me-2' type='checkbox' id='validasi_data_pengguna' name='validasi_data_pengguna' value='valid' />
+              <input className='me-2' type='checkbox' id='validasi_data_pengguna' name='validasi_data_pengguna' value='valid' required />
               <label className='me-5' htmlFor='validasi_data_pengguna'>
                 Data yang saya ajukan adalah benar
               </label>

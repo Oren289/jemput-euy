@@ -4,8 +4,10 @@ import { toast } from 'react-toastify';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import Map from './Map';
 
+const libraries = ['places'];
+
 const EditProfileForm = ({ userData }) => {
-  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries: ['places'] });
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries });
   const { username_pengguna, email_pengguna } = userData;
   const [namaDepan, setNamaDepan] = useState('');
   const [namaBelakang, setNamaBelakang] = useState('');
@@ -15,6 +17,7 @@ const EditProfileForm = ({ userData }) => {
   const [kecamatan, setKecamatan] = useState('Pilih kecamatan di Kota Bandung');
   const [kelurahan, setKelurahan] = useState('');
   const [keteranganAlamat, setKeteranganAlamat] = useState('');
+  const [coordinate, setCoordinate] = useState({ lat: '', lng: '' });
 
   const [newPass, setNewPass] = useState('');
   const [retypePass, setRetypePass] = useState('');
@@ -52,9 +55,12 @@ const EditProfileForm = ({ userData }) => {
       });
 
       const parseRes = await response.json();
+      const latitude = parseFloat(parseRes.latitude);
+      const longitude = parseFloat(parseRes.longitude);
       setKecamatan(parseRes.kecamatan);
       setKelurahan(parseRes.kelurahan);
       setKeteranganAlamat(parseRes.keterangan_alamat);
+      setCoordinate({ lat: latitude, lng: longitude });
     } catch (error) {
       console.error(error.message);
     }
@@ -144,7 +150,7 @@ const EditProfileForm = ({ userData }) => {
   const onAddressSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const body = { kecamatan, kelurahan, keteranganAlamat };
+      const body = { kecamatan, kelurahan, keteranganAlamat, coordinate };
 
       const response = await fetch('http://localhost:5000/user/address', {
         method: 'PUT',
@@ -410,7 +416,7 @@ const EditProfileForm = ({ userData }) => {
                   Titik Alamat
                 </label>
               </div>
-              <div className='col'>{!isLoaded ? <div>Loading...</div> : <Map></Map>}</div>
+              <div className='col'>{!isLoaded ? <div>Loading...</div> : <Map coordinate={coordinate} setCoordinate={setCoordinate}></Map>}</div>
             </div>
             <div className='d-flex justify-content-end mt-4'>
               <button className='btn btn-info' type='submit'>

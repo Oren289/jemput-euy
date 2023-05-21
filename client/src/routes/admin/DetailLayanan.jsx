@@ -11,6 +11,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { useLoadScript } from '@react-google-maps/api';
+import Map from '../../components/Map';
+import MapSimple from '../../components/MapSimple';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const style = {
   position: 'absolute',
@@ -22,7 +26,10 @@ const style = {
   outline: 'none',
 };
 
+const libraries = ['places'];
+
 const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries });
   const [dataLayanan, setDataLayanan] = useState({});
   const [dataSampah, setDataSampah] = useState([]);
   const [statusLayanan, setStatusLayanan] = useState({ value: '' });
@@ -314,9 +321,20 @@ const DetailLayanan = ({ isOpen, setIsOpen, logout }) => {
                   </div>
                 </div>
               </div>
+              <div className='row mt-3'>
+                <div className='col'>
+                  <div className='card max-height-col'>
+                    <div className='card-header pb-0'>
+                      <h6>Titik Alamat</h6>
+                    </div>
+                    <div className='card-body'>{!isLoaded ? <div>Loading...</div> : <MapSimple coordinate={{ lat: parseFloat(dataLayanan.alamat_latitude), lng: parseFloat(dataLayanan.alamat_longitude) }}></MapSimple>}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
 
       <Modal open={open} onClose={handleClose} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>

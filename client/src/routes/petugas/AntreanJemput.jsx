@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import AdminNavbar from '../../components/AdminNavbar';
 import moment from 'moment';
 import { DataGrid } from '@mui/x-data-grid';
 import Home from '@mui/icons-material/Home';
@@ -11,6 +10,8 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import FooterAdmin from '../../components/FooterAdmin';
+import PetugasNavbar from '../../components/PetugasNavbar';
 
 const AntreanJemput = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -120,7 +121,7 @@ const AntreanJemput = ({ isOpen, setIsOpen, logout }) => {
     <div className='admin-container'>
       <PetugasSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className={isOpen ? 'admin-body' : 'admin-body-closed'}>
-        <AdminNavbar logout={logout} />
+        <PetugasNavbar logout={logout} />
         <div className='admin-content'>
           <Breadcrumbs aria-label='breadcrumb'>
             <Link underline='hover' color='inherit' href='/admin-dashboard'>
@@ -225,6 +226,7 @@ const AntreanJemput = ({ isOpen, setIsOpen, logout }) => {
             </TabContext>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

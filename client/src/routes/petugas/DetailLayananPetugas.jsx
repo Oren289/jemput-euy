@@ -9,8 +9,16 @@ import Select from 'react-select';
 import SaveIcon from '@mui/icons-material/Save';
 import { toast } from 'react-toastify';
 import PetugasSidebar from '../../components/PetugasSidebar';
+import { useLoadScript } from '@react-google-maps/api';
+import Map from '../../components/Map';
+import MapSimple from '../../components/MapSimple';
+import FooterAdmin from '../../components/FooterAdmin';
+import PetugasNavbar from '../../components/PetugasNavbar';
+
+const libraries = ['places'];
 
 const DetailLayananPetugas = ({ isOpen, setIsOpen, logout }) => {
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries });
   const [dataLayanan, setDataLayanan] = useState({});
   const [dataSampah, setDataSampah] = useState([]);
   const [usernamePetugas, setUsernamePetugas] = useState([]);
@@ -65,7 +73,7 @@ const DetailLayananPetugas = ({ isOpen, setIsOpen, logout }) => {
 
   const getJenisSampah = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/layanan/jenis-sampah`, {
+      const response = await fetch(`http://localhost:5000/layanan/jenis-sampah/${id.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +127,7 @@ const DetailLayananPetugas = ({ isOpen, setIsOpen, logout }) => {
     <div className='admin-container'>
       <PetugasSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className={isOpen ? 'admin-body' : 'admin-body-closed'}>
-        <AdminNavbar logout={logout} />
+        <PetugasNavbar logout={logout} />
         <div className='admin-content'>
           <Breadcrumbs aria-label='breadcrumb'>
             <Link underline='hover' color='inherit' href='/petugas-dashboard'>
@@ -244,9 +252,20 @@ const DetailLayananPetugas = ({ isOpen, setIsOpen, logout }) => {
                   </div>
                 </div>
               </div>
+              <div className='row mt-3'>
+                <div className='col'>
+                  <div className='card max-height-col'>
+                    <div className='card-header pb-0'>
+                      <h6>Titik Alamat</h6>
+                    </div>
+                    <div className='card-body'>{!isLoaded ? <div>Loading...</div> : <MapSimple coordinate={{ lat: parseFloat(dataLayanan.alamat_latitude), lng: parseFloat(dataLayanan.alamat_longitude) }}></MapSimple>}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

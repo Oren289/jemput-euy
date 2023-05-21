@@ -5,12 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminNavbar from '../../components/AdminNavbar';
 import Sidebar from '../../components/Sidebar';
-import Select from 'react-select';
-import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
-import { toast } from 'react-toastify';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
+import { useLoadScript } from '@react-google-maps/api';
+import Map from '../../components/Map';
+import MapSimple from '../../components/MapSimple';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const style = {
   position: 'absolute',
@@ -22,7 +20,10 @@ const style = {
   outline: 'none',
 };
 
+const libraries = ['places'];
+
 const DetailAduan = ({ isOpen, setIsOpen, logout }) => {
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries });
   const [dataAduan, setDataAduan] = useState({});
   const id = useParams();
 
@@ -144,9 +145,20 @@ const DetailAduan = ({ isOpen, setIsOpen, logout }) => {
                   </div>
                 </div>
               </div>
+              <div className='row mt-3'>
+                <div className='col'>
+                  <div className='card max-height-col'>
+                    <div className='card-header pb-0'>
+                      <h6>Titik Alamat</h6>
+                    </div>
+                    <div className='card-body'>{!isLoaded ? <div>Loading...</div> : <MapSimple coordinate={{ lat: parseFloat(dataAduan.alamat_latitude), lng: parseFloat(dataAduan.alamat_longitude) }}></MapSimple>}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

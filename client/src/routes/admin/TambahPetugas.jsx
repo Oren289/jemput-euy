@@ -7,6 +7,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const TambahPetugas = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -226,6 +227,7 @@ const TambahPetugas = ({ isOpen, setIsOpen, logout }) => {
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { LayananContext } from '../../context/LayananContext';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const AdminDashboard = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -412,6 +413,7 @@ const AdminDashboard = ({ isOpen, setIsOpen, logout }) => {
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

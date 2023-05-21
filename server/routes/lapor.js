@@ -26,9 +26,17 @@ router.post('/', [body('nomor_kontak').isMobilePhone().withMessage('No handphone
       return;
     }
 
-    const { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan } = req.body;
+    const { nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan, coordinate } = req.body;
 
-    const newLaporan = await pool.query('INSERT INTO data_aduan (nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan) VALUES ($1, $2, $3, $4, $5)', [nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan]);
+    const newLaporan = await pool.query('INSERT INTO data_aduan (nama_pelapor, nomor_kontak, deskripsi, alamat_lokasi, jenis_aduan, alamat_latitude, alamat_longitude) VALUES ($1, $2, $3, $4, $5, $6, $7)', [
+      nama_pelapor,
+      nomor_kontak,
+      deskripsi,
+      alamat_lokasi,
+      jenis_aduan,
+      coordinate.lat,
+      coordinate.lng,
+    ]);
 
     res.status(201).json({ status: 'ok' });
   } catch (error) {

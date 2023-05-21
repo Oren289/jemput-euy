@@ -3,6 +3,8 @@ import LaporForm from '../components/LaporForm';
 import Navbar from '../components/Navbar';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
+import CustomJumbotron from '../components/CustomJumbotron';
 
 const Lapor = ({ logout }) => {
   const navigate = useNavigate();
@@ -34,11 +36,15 @@ const Lapor = ({ logout }) => {
   }, []);
 
   return (
-    <div>
-      <Navbar username={username} logout={logout}></Navbar>
-      <div className='container px-md-5 mt-5'>
-        <LaporForm></LaporForm>
+    <div className='page-container'>
+      <div className='content-wrap'>
+        <Navbar username={username} logout={logout}></Navbar>
+        <CustomJumbotron title={'Formulir Lapor'} body={'Isi formulir di bawah untuk membuat laporan kepada UPT Pengelolaan Sampah DLH Kota Bandung'}></CustomJumbotron>
+        <div className='container px-md-5 mt-5'>
+          <LaporForm></LaporForm>
+        </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

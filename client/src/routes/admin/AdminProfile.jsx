@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import EditProfileForm from '../components/EditProfileForm';
-import Navbar from '../components/Navbar';
-import { UserContext } from '../context/UserContext';
-import Footer from '../components/Footer';
+import EditProfileForm from '../../components/EditProfileForm';
+import AdminNavbar from '../../components/AdminNavbar';
+import FooterAdmin from '../../components/FooterAdmin';
+import { Breadcrumbs, Link, Typography } from '@mui/material';
+import Home from '@mui/icons-material/Home';
 
-const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
+const AdminProfile = ({ logout }) => {
   const [username, setUsername] = useState('');
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
         navigate('/login');
       }
 
-      if (parseRes.role === 'admin' || parseRes.role === 'petugas') {
+      if (parseRes.role === 'public' || parseRes.role === 'petugas') {
         navigate('/forbidden');
       }
     } catch (error) {
@@ -75,16 +76,22 @@ const UserProfile = ({ isAuthenticated, setAuth, logout }) => {
   return (
     <div className='page-container'>
       <div className='content-wrap'>
-        <Navbar username={username} logout={logout}></Navbar>
+        <AdminNavbar logout={logout}></AdminNavbar>
         <div className='container px-md-5'>
+          <Breadcrumbs aria-label='breadcrumb'>
+            <Link underline='hover' color='inherit' href='/admin-dashboard'>
+              <Home></Home>
+            </Link>
+            <Typography color='text.primary'>Profile saya</Typography>
+          </Breadcrumbs>
           <div className='mt-5'>
             <EditProfileForm userData={userData}></EditProfileForm>
           </div>
         </div>
       </div>
-      <Footer></Footer>
+      <FooterAdmin></FooterAdmin>
     </div>
   );
 };
 
-export default UserProfile;
+export default AdminProfile;

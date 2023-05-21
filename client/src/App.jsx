@@ -35,6 +35,8 @@ import DaftarAduan from './routes/admin/DaftarAduan';
 import DetailAduan from './routes/admin/DetailAduan';
 import Statistik from './routes/admin/Statistik';
 import Map from './components/Map';
+import AdminProfile from './routes/admin/AdminProfile';
+import PetugasProfile from './routes/petugas/PetugasProfile';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -97,6 +99,7 @@ function App() {
                     <Route exact path='/lapor' element={<Lapor isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
                     <Route exact path='/riwayat' element={<Riwayat isAuthenticated={isAuthenticated} setAuth={setAuth} logout={logout} />}></Route>
                     <Route exact path='/admin-dashboard' element={<AdminDashboard isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
+                    <Route exact path='/admin-profile' element={<AdminProfile logout={logout} />}></Route>
                     <Route exact path='/admin-daftar-layanan' element={<DaftarLayanan isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/admin-detail-layanan/:id' element={<DetailLayanan isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/admin-daftar-pengguna' element={<DaftarPengguna isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
@@ -107,12 +110,13 @@ function App() {
                     <Route exact path='/admin-statistik' element={<Statistik isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/admin-detail-aduan/:id' element={<DetailAduan isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/petugas-dashboard' element={<PetugasDashboard isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
+                    <Route exact path='/petugas-profile' element={<PetugasProfile logout={logout} />}></Route>
                     <Route exact path='/petugas-antrean-jemput' element={<AntreanJemput isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/petugas-detail-layanan/:id' element={<DetailLayananPetugas isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/petugas-riwayat' element={<PetugasRiwayat isOpen={isOpen} setIsOpen={setIsOpen} logout={logout} />}></Route>
                     <Route exact path='/forbidden' element={<ForbiddenPage />}></Route>
-                    <Route exact path='/notfound' element={<PageNotFound />}></Route>
                     <Route exact path='/map' element={<Map />}></Route>
+                    <Route exact path='/*' element={<PageNotFound />}></Route>
                     {/* <Route exact path='/daftar-layanan' element={<DaftarLayananPage />}></Route> */}
                   </Routes>
                 </Router>

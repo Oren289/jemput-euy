@@ -57,9 +57,16 @@ router.get('/address', authorization, async (req, res) => {
 
 router.put('/address', authorization, async (req, res) => {
   try {
-    const { kecamatan, kelurahan, keteranganAlamat } = req.body;
+    const { kecamatan, kelurahan, keteranganAlamat, coordinate } = req.body;
 
-    const updateAddress = await pool.query('UPDATE alamat SET kecamatan = $1, kelurahan = $2, keterangan_alamat = $3 WHERE username_pengguna = $4', [kecamatan, kelurahan, keteranganAlamat, req.user]);
+    const updateAddress = await pool.query('UPDATE alamat SET kecamatan = $1, kelurahan = $2, keterangan_alamat = $3, latitude = $4, longitude = $5 WHERE username_pengguna = $6', [
+      kecamatan,
+      kelurahan,
+      keteranganAlamat,
+      coordinate.lat,
+      coordinate.lng,
+      req.user,
+    ]);
 
     res.status(200).json({ status: 'ok', msg: 'updated successfully' });
   } catch (error) {

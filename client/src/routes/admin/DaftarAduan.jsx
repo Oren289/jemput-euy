@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const DaftarAduan = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -178,6 +179,7 @@ const DaftarAduan = ({ isOpen, setIsOpen, logout }) => {
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

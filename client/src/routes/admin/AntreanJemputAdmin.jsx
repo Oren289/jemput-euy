@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Home from '@mui/icons-material/Home';
 import { Breadcrumbs, IconButton, Link, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const AntreanJemputAdmin = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -166,6 +167,7 @@ const AntreanJemputAdmin = ({ isOpen, setIsOpen, logout }) => {
             />
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

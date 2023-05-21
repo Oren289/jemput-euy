@@ -15,6 +15,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Breadcrumbs, IconButton, Link, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -299,6 +300,7 @@ const DaftarPengguna = ({ isOpen, setIsOpen, logout }) => {
             </TabContext>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

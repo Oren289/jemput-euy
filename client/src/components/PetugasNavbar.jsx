@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import dropdownImg from '../images/blank-pp.png';
 import { UserContext } from '../context/UserContext';
 
-const AdminNavbar = ({ logout }) => {
+const PetugasNavbar = ({ logout }) => {
   const { surname } = useContext(UserContext);
 
   return (
@@ -20,7 +20,7 @@ const AdminNavbar = ({ logout }) => {
             <hr className='dropdown-divider' />
           </li>
           <li>
-            <a href='/admin-profile' className='dropdown-item'>
+            <a href='/petugas-profile' className='dropdown-item'>
               Profile saya
             </a>
           </li>
@@ -35,4 +35,4 @@ const AdminNavbar = ({ logout }) => {
   );
 };
 
-export default AdminNavbar;
+export default PetugasNavbar;

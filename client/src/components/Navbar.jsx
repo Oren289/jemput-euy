@@ -36,17 +36,17 @@ const Navbar = ({ username, logout }) => {
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
               <li className='nav-item me-4'>
-                <a className='nav-link nav-active' aria-current='page' href='/'>
+                <a className='nav-link fw-bold' aria-current='page' href='/'>
                   Beranda
                 </a>
               </li>
               <li className='nav-item me-4'>
-                <a className='nav-link' href='/lapor'>
+                <a className='nav-link fw-bold' href='/lapor'>
                   Lapor
                 </a>
               </li>
               <li className='nav-item'>
-                <a className='nav-link' href='/layanan'>
+                <a className='nav-link fw-bold' href='/layanan'>
                   Layanan
                 </a>
               </li>

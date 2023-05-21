@@ -1,86 +1,92 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import { toast } from "react-toastify";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { toast } from 'react-toastify';
+import { useLoadScript } from '@react-google-maps/api';
+import Map from './Map';
+
+const libraries = ['places'];
 
 const LayananForm = () => {
+  const { isLoaded } = useLoadScript({ googleMapsApiKey: 'AIzaSyDCzjmZxIrRDVlC4L_JPUC8VXl43LNC2qQ', libraries });
   const navigate = useNavigate();
   const animatedComponent = makeAnimated();
 
   const options = [
-    { value: "Andir", label: "Andir" },
-    { value: "Antapani (Cicadas)", label: "Antapani (Cicadas)" },
-    { value: "Arcamanik", label: "Arcamanik" },
-    { value: "Astana Anyar", label: "Astana Anyar" },
-    { value: "Babakan Ciparay", label: "Babakan Ciparay" },
-    { value: "Bandung Kidul", label: "Bandung Kidul" },
-    { value: "Bandung Kulon", label: "Bandung Kulon" },
-    { value: "Bandung Wetan", label: "Bandung Wetan" },
-    { value: "Batununggal", label: "Batununggal" },
-    { value: "Bojongloa Kaler", label: "Bojongloa Kaler" },
-    { value: "Bojongloa Kidul", label: "Bojongloa Kidul" },
-    { value: "Buahbatu (Margacinta)", label: "Buahbatu (Margacinta)" },
-    { value: "Cibeunying Kaler", label: "Cibeunying Kaler" },
-    { value: "Cibeunying Kidul", label: "Cibeunying Kidul" },
-    { value: "Cibiru", label: "Cibiru" },
-    { value: "Cicendo", label: "Cicendo" },
-    { value: "Cidadap", label: "Cidadap" },
-    { value: "Cinambo", label: "Cinambo" },
-    { value: "Coblong", label: "Coblong" },
-    { value: "Gedebage", label: "Gedebage" },
-    { value: "Kiaracondong", label: "Kiaracondong" },
-    { value: "Lengkong", label: "Lengkong" },
-    { value: "Mandalajati", label: "Mandalajati" },
-    { value: "Panyileukan", label: "Panyileukan" },
-    { value: "Rancasari", label: "Rancasari" },
-    { value: "Regol", label: "Regol" },
-    { value: "Sukajadi", label: "Sukajadi" },
-    { value: "Sukasari", label: "Sukasari" },
-    { value: "Sumur Bandung", label: "Sumur Bandung" },
-    { value: "Ujung Berung", label: "Ujung Berung" },
+    { value: 'Andir', label: 'Andir' },
+    { value: 'Antapani (Cicadas)', label: 'Antapani (Cicadas)' },
+    { value: 'Arcamanik', label: 'Arcamanik' },
+    { value: 'Astana Anyar', label: 'Astana Anyar' },
+    { value: 'Babakan Ciparay', label: 'Babakan Ciparay' },
+    { value: 'Bandung Kidul', label: 'Bandung Kidul' },
+    { value: 'Bandung Kulon', label: 'Bandung Kulon' },
+    { value: 'Bandung Wetan', label: 'Bandung Wetan' },
+    { value: 'Batununggal', label: 'Batununggal' },
+    { value: 'Bojongloa Kaler', label: 'Bojongloa Kaler' },
+    { value: 'Bojongloa Kidul', label: 'Bojongloa Kidul' },
+    { value: 'Buahbatu (Margacinta)', label: 'Buahbatu (Margacinta)' },
+    { value: 'Cibeunying Kaler', label: 'Cibeunying Kaler' },
+    { value: 'Cibeunying Kidul', label: 'Cibeunying Kidul' },
+    { value: 'Cibiru', label: 'Cibiru' },
+    { value: 'Cicendo', label: 'Cicendo' },
+    { value: 'Cidadap', label: 'Cidadap' },
+    { value: 'Cinambo', label: 'Cinambo' },
+    { value: 'Coblong', label: 'Coblong' },
+    { value: 'Gedebage', label: 'Gedebage' },
+    { value: 'Kiaracondong', label: 'Kiaracondong' },
+    { value: 'Lengkong', label: 'Lengkong' },
+    { value: 'Mandalajati', label: 'Mandalajati' },
+    { value: 'Panyileukan', label: 'Panyileukan' },
+    { value: 'Rancasari', label: 'Rancasari' },
+    { value: 'Regol', label: 'Regol' },
+    { value: 'Sukajadi', label: 'Sukajadi' },
+    { value: 'Sukasari', label: 'Sukasari' },
+    { value: 'Sumur Bandung', label: 'Sumur Bandung' },
+    { value: 'Ujung Berung', label: 'Ujung Berung' },
   ];
 
   const options2 = [
-    { value: "Kasur", label: "Kasur" },
-    { value: "Springbed", label: "Springbed" },
-    { value: "Kursi", label: "Kursi" },
-    { value: "Meja", label: "Meja" },
-    { value: "Elektronik", label: "Elektronik" },
-    { value: "Lainnya", label: "Lainnya" },
+    { value: 'Kasur', label: 'Kasur' },
+    { value: 'Springbed', label: 'Springbed' },
+    { value: 'Kursi', label: 'Kursi' },
+    { value: 'Meja', label: 'Meja' },
+    { value: 'Elektronik', label: 'Elektronik' },
+    { value: 'Lainnya', label: 'Lainnya' },
   ];
 
   const selectStyle = {
     control: (styles, { isFocused }) => {
-      return { ...styles, borderColor: isFocused ? "#362fd9" : "#CBCBCB", outline: "none", padding: "0.2rem", borderRadius: "0.3em", boxShadow: "none" };
+      return { ...styles, borderColor: isFocused ? '#362fd9' : '#CBCBCB', outline: 'none', padding: '0.2rem', borderRadius: '0.3em', boxShadow: 'none' };
     },
   };
 
   const { userData, setUserData, userAddress, setUserAddress, getUserAddress } = useContext(UserContext);
 
-  const [nama, setNama] = useState("");
-  const [noHp, setNoHp] = useState("");
-  const [kecamatan, setKecamatan] = useState("");
-  const [kelurahan, setKelurahan] = useState("");
-  const [keteranganAlamat, setKeteranganAlamat] = useState("");
+  const [nama, setNama] = useState('');
+  const [noHp, setNoHp] = useState('');
+  const [kecamatan, setKecamatan] = useState('');
+  const [kelurahan, setKelurahan] = useState('');
+  const [keteranganAlamat, setKeteranganAlamat] = useState('');
   const [jumlahSampah, setJumlahSampah] = useState(1);
-  const [jenisSampah, setJenisSampah] = useState("");
-  const [keteranganTambahan, setKeteranganTambahan] = useState("");
+  const [jenisSampah, setJenisSampah] = useState('');
+  const [keteranganTambahan, setKeteranganTambahan] = useState('');
+  const [coordinate, setCoordinate] = useState({ lat: '', lng: '' });
 
   const [addressCheckBox, setAddressCheckBox] = useState(false);
 
   const getUserData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user/", {
-        method: "GET",
+      const response = await fetch('http://localhost:5000/user/', {
+        method: 'GET',
         headers: {
           token: localStorage.token,
         },
       });
 
       const parseRes = await response.json();
-      setNama(parseRes.nama_depan_pengguna + " " + parseRes.nama_belakang_pengguna);
+      setNama(parseRes.nama_depan_pengguna + ' ' + parseRes.nama_belakang_pengguna);
       setNoHp(parseRes.no_hp_pengguna);
     } catch (err) {
       console.error(err.message);
@@ -90,30 +96,33 @@ const LayananForm = () => {
   const onCheckboxChange = () => {
     setAddressCheckBox(!addressCheckBox);
     if (!addressCheckBox) {
+      const latitude = parseFloat(userAddress.latitude);
+      const longitude = parseFloat(userAddress.longitude);
       setKecamatan({ value: userAddress.kecamatan, label: userAddress.kecamatan });
       setKelurahan(userAddress.kelurahan);
       setKeteranganAlamat(userAddress.keterangan_alamat);
+      setCoordinate({ lat: latitude, lng: longitude });
     } else {
-      setKecamatan("");
-      setKelurahan("");
-      setKeteranganAlamat("");
+      setKecamatan('');
+      setKelurahan('');
+      setKeteranganAlamat('');
     }
   };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      if (nama === "" || noHp === "" || kecamatan === "" || kelurahan === "" || keteranganAlamat === "" || jenisSampah === "") {
-        return toast.error("Mohon lengkapi formulir terlebih dahulu!");
+      if (nama === '' || noHp === '' || kecamatan === '' || kelurahan === '' || keteranganAlamat === '' || jenisSampah === '' || coordinate.lat === '') {
+        return toast.error('Mohon lengkapi formulir terlebih dahulu!');
       }
 
       const valueKecamatan = kecamatan.value;
-      const body = { nama, noHp, valueKecamatan, kelurahan, keteranganAlamat, jumlahSampah, jenisSampah, keteranganTambahan };
+      const body = { nama, noHp, valueKecamatan, kelurahan, keteranganAlamat, jumlahSampah, jenisSampah, keteranganTambahan, coordinate };
 
-      const response = await fetch("http://localhost:5000/layanan/", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/layanan/', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           token: localStorage.token,
         },
         body: JSON.stringify(body),
@@ -122,10 +131,10 @@ const LayananForm = () => {
       const parseRes = await response.json();
 
       if (parseRes.status) {
-        toast.success("Permohonan berhasil dikirim!");
+        toast.success('Permohonan berhasil dikirim!');
         setJumlahSampah(1);
-        setJenisSampah("");
-        setKeteranganTambahan("");
+        setJenisSampah('');
+        setKeteranganTambahan('');
       } else {
         toast.error(parseRes.error);
       }
@@ -205,6 +214,10 @@ const LayananForm = () => {
               ></textarea>
             </div>
           </div>
+          <div className='row mb-3'>
+            <div className='col-md-4 text-end'></div>
+            <div className='col-md-8'>{!isLoaded ? <div>Loading...</div> : <Map coordinate={coordinate} setCoordinate={setCoordinate}></Map>}</div>
+          </div>
           <div className='row mb-5'>
             <div className='col-md-4 text-end'></div>
             <div className='col-md-8'>
@@ -273,7 +286,7 @@ const LayananForm = () => {
           <div className='row mt-4'>
             <div className='col-md-4'></div>
             <div className='col-md-8 text-end'>
-              <input className='me-2' type='checkbox' id='validasi_data_pengguna' name='validasi_data_pengguna' value='valid' />
+              <input className='me-2' type='checkbox' id='validasi_data_pengguna' name='validasi_data_pengguna' value='valid' required />
               <label className='me-5' htmlFor='validasi_data_pengguna'>
                 Data yang saya ajukan adalah benar
               </label>
@@ -287,42 +300,3 @@ const LayananForm = () => {
 };
 
 export default LayananForm;
-
-{
-  /* <select name='kecamatan' id='kecamatan' className='form-control no-outline' value={kecamatan} onChange={(e) => setKecamatan(e.target.value)} required>
-                <option value='Pilih kecamatan di Kota Bandung' hidden>
-                  Pilih kecamatan di Kota Bandung
-                </option>
-                <option value='Andir'>Andir</option>
-                <option value='Antapani (Cica
-                  das)'>Antapani (Cicadas)</option>
-                <option value='Arcamanik'>Arcamanik</option>
-                <option value='Astana Anyar'>Astana Anyar</option>
-                <option value='Babakan Ciparay'>Babakan ciparay</option>
-                <option value='Bandung Kidul'>Bandung kidul</option>
-                <option value='Bandung Kulon'>Bandung kulon</option>
-                <option value='Bandung Wetan'>Bandung wetan</option>
-                <option value='Batununggal'>Batununggal</option>
-                <option value='Bojongloa Kaler'>Bojongloa Kaler</option>
-                <option value='Bojongloa Kidul'>Bojongloa Kidul</option>
-                <option value='Buahbatu (Margacinta)'>Buahbatu (Margacinta)</option>
-                <option value='Cibeunying Kaler'>Cibeunying Kaler</option>
-                <option value='Cibeunying Kidul'>Cibeunying Kidul</option>
-                <option value='Cibiru'>Cibiru</option>
-                <option value='Cicendo'>Cicendo</option>
-                <option value='Cidadap'>Cidadap</option>
-                <option value='Cinambo'>Cinambo</option>
-                <option value='Coblong'>Coblong</option>
-                <option value='Gedebage'>Gedebage</option>
-                <option value='Kiaracondong'>Kiaracondong</option>
-                <option value='Lengkong'>Lengkong</option>
-                <option value='Mandalajati'>Mandalajati</option>
-                <option value='Panyileukan'>Panyileukan</option>
-                <option value='Rancasari'>Rancasari</option>
-                <option value='Regol'>Regol</option>
-                <option value='Sukajadi'>Sukajadi</option>
-                <option value='Sukasari'>Sukasari</option>
-                <option value='Sumur Bandung'>Sumur Bandung</option>
-                <option value='Ujung Berung'>Ujung Berung</option>
-              </select> */
-}

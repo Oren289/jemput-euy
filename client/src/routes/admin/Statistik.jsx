@@ -7,6 +7,7 @@ import { PieChart, Pie, Legend, Cell, Tooltip, ResponsiveContainer, BarChart, Ba
 import CircleIcon from '@mui/icons-material/Circle';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const Statistik = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -548,6 +549,7 @@ const Statistik = ({ isOpen, setIsOpen, logout }) => {
             </div>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

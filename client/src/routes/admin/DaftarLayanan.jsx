@@ -13,6 +13,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import FooterAdmin from '../../components/FooterAdmin';
 
 const DaftarLayanan = ({ isOpen, setIsOpen, logout }) => {
   const navigate = useNavigate();
@@ -370,6 +371,7 @@ const DaftarLayanan = ({ isOpen, setIsOpen, logout }) => {
             </TabContext>
           </div>
         </div>
+        <FooterAdmin></FooterAdmin>
       </div>
     </div>
   );

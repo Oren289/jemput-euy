@@ -2,7 +2,7 @@ import React from 'react';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption, ComboboxOptionText } from '@reach/combobox';
 
-const UsePlacesAutocomplete = ({ setSelected }) => {
+const UsePlacesAutocomplete = ({ setCoordinate, setCenter }) => {
   const {
     ready,
     value,
@@ -17,7 +17,8 @@ const UsePlacesAutocomplete = ({ setSelected }) => {
 
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
-    setSelected({ lat, lng });
+    setCoordinate({ lat, lng });
+    setCenter({ lat, lng });
   };
 
   return (

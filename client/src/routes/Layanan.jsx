@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import LayananForm from '../components/LayananForm';
 import Navbar from '../components/Navbar';
 import { UserContext } from '../context/UserContext';
+import Footer from '../components/Footer';
+import Jumbotron from '../components/Jumbotron';
+import CustomJumbotron from '../components/CustomJumbotron';
 
 const Layanan = ({ logout }) => {
   const navigate = useNavigate();
@@ -39,11 +42,15 @@ const Layanan = ({ logout }) => {
   }, []);
 
   return (
-    <div>
-      <Navbar logout={logout} username={username}></Navbar>
-      <div className='container px-md-5 mt-5'>
-        <LayananForm></LayananForm>
+    <div className='page-container'>
+      <div className='content-wrap'>
+        <Navbar logout={logout} username={username}></Navbar>
+        <CustomJumbotron title={'Formulir Layanan'} body={'Isi formulir di bawah untuk pendaftaran layanan penjemputan sampah besar'}></CustomJumbotron>
+        <div className='container px-md-5 mt-5'>
+          <LayananForm></LayananForm>
+        </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

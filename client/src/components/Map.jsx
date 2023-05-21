@@ -11,15 +11,15 @@ import UsePlacesAutocomplete from './UsePlacesAutocomplete';
 //   return <MapRender />;
 // };
 
-const Map = () => {
-  const center = useMemo(() => ({ lat: -6.919548, lng: 107.618196 }), []);
-  const [selected, setSelected] = useState(null);
+const Map = ({ coordinate, setCoordinate }) => {
+  const [center, setCenter] = useState({ lat: -6.919548, lng: 107.618196 });
+  // const center = useMemo(() => ({ lat: -6.919548, lng: 107.618196 }), []);
 
   return (
     <>
-      <UsePlacesAutocomplete setSelected={setSelected}></UsePlacesAutocomplete>
-      <GoogleMap zoom={13} center={center} mapContainerClassName='map-container' onClick={(ev) => setSelected({ lat: ev.latLng.toJSON().lat, lng: ev.latLng.toJSON().lng })}>
-        {selected && <MarkerF position={selected}></MarkerF>}
+      <UsePlacesAutocomplete setCoordinate={setCoordinate} setCenter={setCenter}></UsePlacesAutocomplete>
+      <GoogleMap zoom={13} center={coordinate.lat !== '' ? coordinate : center} mapContainerClassName='map-container' onClick={(ev) => setCoordinate({ lat: ev.latLng.toJSON().lat, lng: ev.latLng.toJSON().lng })}>
+        {coordinate && <MarkerF position={coordinate}></MarkerF>}
       </GoogleMap>
     </>
   );
